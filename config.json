@@ -1,6 +1,6 @@
 {
     "description" : "Beep, bop, I'm a bot, I said beep bop I'm a bot.",
     "token"       : "token here",
-    "verbose"     : False,
-    "bleeding"    : False
+    "verbose"     : false,
+    "bleeding"    : false
 }
