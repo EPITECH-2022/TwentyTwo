@@ -24,4 +24,4 @@ class Fun:
         ''' tells the age of a Discord account '''
         if member is None:
             member = ctx.message.author
-        await self.bot.say('{0} joined Discord at {0.created_at}'.format(member))
+        await self.bot.say('`{0}` joined Discord at {0.created_at}'.format(member))
