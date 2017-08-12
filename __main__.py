@@ -6,21 +6,58 @@ from Fun import Fun
 
 def main():
 
+    # variables
     config_file = 'config.json'
 
+    # load config
     with open(config_file) as f:
         config = json.load(f)
+
+    # split config
     description, token = config['description'], config['token']
 
-    client = Bot(description=description)
-    client.add_cog(Fun(client))
-    client.run(token)
+    # define bot
+    bot = Bot(description=description)
+    bot.add_cog(Fun(bot))
+
+    # launch bot
+    bot.run(token)
 
 class Bot(commands.Bot):
 
     def __init__(self, *args, **kwargs):
-        ''' Rewrite the command_prefix flag to force mention '''
+        # Rewrite the command_prefix flag to force mention
         super().__init__(*args, command_prefix=commands.when_mentioned, **kwargs)
+
+        self.admins  = []
+        self.verbose  = False
+        self.bleeding = False
+
+    def log(self, txt):
+        if self.verbose:
+            print(txt)
+
+    async def on_ready(self):
+        self.log('Logged as {}#{}'.format(self.user.name, self.user.id))
+        self.log('My boty is ready')
+
+    async def on_member_join(self, member):
+        if self.bleeding:
+            self.log('Initiating verification procedure for user "{}".'.format(member.name))
+            await self.verify(member)
+
+    async def verify(self, member):
+        msg  = 'Please send your EPITECH mail adress\n'
+        msg += 'i.e.: ```yournam_e@epitech.eu```\n'
+        msg += 'It has to be an EPITECH adress, any other adress will not be accepted'
+
+        await self.send_message(member, msg)
+
+    def is_epitech(self, txt):
+        if txt[-11:] != '@epitech.eu':
+            return False
+        # TODO : mail username (check there are no @)
+        return True
 
 if __name__ == '__main__':
     main()
