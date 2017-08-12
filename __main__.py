@@ -1,8 +1,6 @@
-import io, json, os.path
+import json, os.path
 import discord
 from discord.ext import commands
-
-from pprint import pprint
 
 def main():
 
