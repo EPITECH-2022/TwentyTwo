@@ -7,7 +7,10 @@ class Fun:
         self.bot = bot
 
     @commands.command()
-    async def hello():
+    async def hello(self):
+        ''' says the robot '''
         await self.bot.reply('Hi!')
-    async def hi():
+    @commands.command()
+    async def hi(self):
+        ''' says the IA '''
         await self.bot.reply('Hello!')
