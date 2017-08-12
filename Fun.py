@@ -20,8 +20,8 @@ class Fun:
         await self.bot.reply('Hello!')
 
     @commands.command(pass_context=True)
-    async def age(self, ctx, member: discord.Member = None):
+    async def age(self, context, member: discord.Member = None):
         ''' tells the age of a Discord account '''
         if member is None:
-            member = ctx.message.author
+            member = context.message.author
         await self.bot.say('`{0}` joined Discord at {0.created_at}'.format(member))
