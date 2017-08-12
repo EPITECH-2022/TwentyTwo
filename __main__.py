@@ -15,7 +15,7 @@ def main():
 
     # split config
     description, token = config['description'], config['token']
-    verbose, token     = config['verbose'], config['bleeding']
+    verbose, bleeding  = config['verbose'], config['bleeding']
 
     # define bot
     bot = Bot(description=description, verbose=verbose, bleeding=bleeding)
@@ -26,7 +26,7 @@ def main():
 
 class Bot(commands.Bot):
 
-    def __init__(self, *args, verbose=False, bleeding=False, **kwargs):
+    def __init__(self, verbose=False, bleeding=False, *args, **kwargs):
         # Rewrite the command_prefix flag to force mention
         super().__init__(*args, command_prefix=commands.when_mentioned, **kwargs)
 
