@@ -26,9 +26,9 @@ def main():
 
 class Bot(commands.Bot):
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, verbose=False, bleeding=False, **kwargs):
         # Rewrite the command_prefix flag to force mention
-        super().__init__(*args, command_prefix=commands.when_mentioned, verbose=False, bleeding=False **kwargs)
+        super().__init__(*args, command_prefix=commands.when_mentioned, **kwargs)
 
         self.admins  = []
         self.verbose  = verbose
