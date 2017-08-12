@@ -15,9 +15,10 @@ def main():
 
     # split config
     description, token = config['description'], config['token']
+    verbose, token     = config['verbose'], config['bleeding']
 
     # define bot
-    bot = Bot(description=description)
+    bot = Bot(description=description, verbose=verbose, bleeding=bleeding)
     bot.add_cog(Fun(bot))
 
     # launch bot
@@ -27,11 +28,11 @@ class Bot(commands.Bot):
 
     def __init__(self, *args, **kwargs):
         # Rewrite the command_prefix flag to force mention
-        super().__init__(*args, command_prefix=commands.when_mentioned, **kwargs)
+        super().__init__(*args, command_prefix=commands.when_mentioned, verbose=False, bleeding=False **kwargs)
 
         self.admins  = []
-        self.verbose  = False
-        self.bleeding = False
+        self.verbose  = verbose
+        self.bleeding = bleeding
 
     def log(self, txt):
         if self.verbose:
