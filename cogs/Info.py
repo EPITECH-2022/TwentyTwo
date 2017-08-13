@@ -19,7 +19,7 @@ class Info:
             await self.bot.send_message(context.message.channel, embed=embed)
 
     @commands.command()
-    async def info(self, context, what: str = None):
+    async def info(self, what: str = None):
         ''' Gives info about something '''
         embed = discord.Embed()
         if what in [None, 'bot']:
