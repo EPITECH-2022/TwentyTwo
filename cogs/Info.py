@@ -30,7 +30,7 @@ class Info:
             embed.add_field(name='Description', value=content)
             embed.add_field(name='GitHub',      value=url)
         if what in ['command', 'commands']:
-            header  = 'Commands are prefixed by a mention to `{}` or a `!`'.format(self.bot.me)
+            header  = 'Commands are prefixed by a mention to `{}` or a `!`'.format(self.bot.user)
             admin   = '- kill\n'
             admin  += '- ban [@user] [["reason"]] [[delete message (days)]]\n'
             admin  += '- edit ["field"] ["value"] (edit the bot account)'
