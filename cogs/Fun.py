@@ -39,12 +39,15 @@ class Fun:
         msg = '`{}` joined *{}* on {}'
         await self.bot.say(msg.format(member, member.server, datetime.strftime(member.joined_at, '%d %B %Y at %X')))
 
+    '''
     @commands.command(name='help')
     async def _help(self):
         await self.bot.reply('ask `Tina#4153`')
+    '''
 
     @commands.command(pass_context=True, aliases=['ri', 'riz', 'regional_indicator'])
     async def emoji(self, context):
+        ''' Sends a text and replace letters with regional indicators '''
         content = self.bot.get_text(context)
         if content in [None, '', ' '] or context.invoked_with == 'riz' and not self.bot.is_owner(context.message.author):
             return
@@ -65,6 +68,7 @@ class Fun:
 
     @commands.command(pass_context=True)
     async def decode(self, context):
+        ''' Convert any character to its ASCII counterpart '''
         content = self.bot.get_text(context)
         if content in [None, ' ']:
             return
@@ -75,6 +79,7 @@ class Fun:
 
     @commands.command(pass_context=True, aliases=['prononciation', 'pron'])
     async def pronunciation(self, context):
+        ''' Uses Google API to fetch the pronunciation of a word (useful for Japanese, Korean, etc) '''
         content       = self.bot.get_text(context)
         translator    = Translator()
         language      = translator.detect(content).lang[:2]
@@ -88,6 +93,7 @@ class Fun:
 
     @commands.command(pass_context=True, aliases=['trad', 'trans', 'traduit'])
     async def translate(self, context):
+        ''' Translates a text to a destination language '''
         content       = self.bot.get_text(context)
         translator    = Translator()
         language      = content[:2]

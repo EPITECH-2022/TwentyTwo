@@ -29,18 +29,18 @@ class Info:
             url      = 'https://github.com/EPITECH-2022/TwentyTwo'
             embed.add_field(name='Description', value=content)
             embed.add_field(name='GitHub',      value=url)
-        if what in ['command', 'commands']:
+        elif what in ['command', 'commands']:
             header  = 'Commands are prefixed by a mention to `{}` or a `!`'.format(self.bot.user)
             admin   = '- kill\n'
             admin  += '- ban [@user] [["reason"]] [[delete message (days)]]\n'
             admin  += '- edit ["field"] ["value"] (edit the bot account)'
             fun     = '- hello, - hi, - help\n'
-            fun    += '- age [[@user]], - joined [[@user]]'
-            fun    += '- emoji | ri ["text to convert to emoji"]'
-            fun    += '- decode ["text"]'
-            fun    += '- trad ["language (2 characters)"] ["text"]'
+            fun    += '- age [[@user]], - joined [[@user]]\n'
+            fun    += '- emoji | ri ["text to convert to emoji"]\n'
+            fun    += '- decode ["text"]\n'
+            fun    += '- trad ["language (2 characters)"] ["text"]\n'
             fun    += '- pronunciation | pron ["text"]'
-            stats   = '- enum [everyone | status | role | game | here]\n'
+            stats   = '- enum [[everyone | status | role | game | here]]\n'
             stats  += '- whoplays ["partial matching text"]'
             info    = '- topic\n'
             info   += '- info [bot | command]'
@@ -49,4 +49,14 @@ class Info:
             embed.add_field(name='Fun',   value=fun)
             embed.add_field(name='Stats', value=stats)
             embed.add_field(name='Info',  value=info)
+        elif what in ['github', 'Github', 'GitHub']:
+            github  = 'GitHub is an online GUI and augmentation for using Git.\n'
+            github += 'You can use GitHub to read the code, send pull requests...'
+            git     = 'Git is an old (but still maintained) free versioning software.'
+            link    = 'https://github.com/EPITECH-2022/TwentyTwo'
+            embed.add_field(name='GitHub', value=github)
+            embed.add_field(name='Git',    value=git)
+            embed.add_field(name='Check this bot on GitHub', value=link)
+        else:
+            return
         await self.bot.send_message(context.message.channel, embed=embed)

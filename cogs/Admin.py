@@ -32,13 +32,13 @@ class Admin:
             i -= 1
         return i != -1
 
-    @commands.command(pass_context=True)
+    @commands.command(pass_context=True, hidden=True)
     @commands.check(is_admin)
     async def kill(self, context):
         await self.bot.ok(context)
         sys.exit()
 
-    @commands.command(pass_context=True, no_pm=True)
+    @commands.command(pass_context=True, no_pm=True, hidden=True)
     @commands.check(is_admin)
     async def ban(self, context, user: discord.Member = None, reason: str = None, delete: int = 0):
         if user is None:
@@ -53,7 +53,7 @@ class Admin:
         except Exception as e:
             await self.bot.report(context, e)
 
-    @commands.command(pass_context=True)
+    @commands.command(pass_context=True, hidden=True)
     @commands.check(is_admin)
     async def edit(self, context, field: str = None, value: str = None):
         if field is None or value is None:
@@ -69,7 +69,7 @@ class Admin:
         except Exception as e:
             await self.bot.report(context, e)
 
-    @commands.command(pass_context=True, aliases=['cls'])
+    @commands.command(pass_context=True, aliases=['cls'], hidden=True)
     @commands.check(is_admin)
     async def clean(self, context, limit=100):
         def predicate(message):
@@ -81,7 +81,7 @@ class Admin:
         except Exception as e:
             await self.bot.report(context, e)
 
-    @commands.command(pass_context=True)
+    @commands.command(pass_context=True, hidden=True)
     @commands.check(is_admin)
     async def purge(self, context, limit=100):
         try:
