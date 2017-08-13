@@ -25,7 +25,7 @@ class Info:
         if what in [None, 'bot']:
             content  = 'I am a bot made and run by `Tina#4153`.\n'
             content += 'Anyone can contribute to my code and add commands !\n'
-            content += 'Pleaase consider checking out the GitHub.'
+            content += 'Please consider checking out the GitHub.'
             url      = 'https://github.com/EPITECH-2022/TwentyTwo'
             embed.add_field(name='Description', value=content)
             embed.add_field(name='GitHub',      value=url)
@@ -43,7 +43,7 @@ class Info:
             stats   = '- enum [[everyone | status | role | game | here]]\n'
             stats  += '- whoplays ["partial matching text"]'
             info    = '- topic\n'
-            info   += '- info [bot | command]'
+            info   += '- info [bot | command | github | lag]'
             embed.add_field(name='Usage', value=header)
             embed.add_field(name='Admin', value=admin)
             embed.add_field(name='Fun',   value=fun)
@@ -58,14 +58,14 @@ class Info:
             embed.add_field(name='Git',    value=git)
             embed.add_field(name='Check this bot on GitHub', value=link)
         elif what in ['lag', 'lagging', '3g', '3G', 'h+', 'H+', 'doublon', 'anti-lag', 'antilag']:
-            lagging   = 'Discord has no native anti lag. That means when someone\n'
-            lagging  += 'is on a slow connection, there is a potential risk that\n'
-            lagging  += 'the message he is trying to send will be sent multiple\n'
-            lagging  += 'times. That is no good.'
-            anti_lag  = 'To prevent this, this bot is designed with an automatic\n'
-            anti_lag += 'message purging. On every message it will check a very\n'
-            anti_lag += 'specific predicate on the 10 previous messages. Here is\n'
-            anti_lag += 'the specs :\n'
+            lagging   = 'Discord has no native anti lag. That means when someone'
+            lagging  += ' is on a slow connection, there is a potential risk that'
+            lagging  += ' the message he is trying to send will be sent multiple'
+            lagging  += ' times. That is no good.'
+            anti_lag  = 'To prevent this, this bot is designed with an automatic'
+            anti_lag += ' message purging. On every message it will check a very'
+            anti_lag += ' specific predicate on the 10 previous messages. Here is'
+            anti_lag += ' the specs :\n'
             anti_lag += '- Message has the same content and\n'
             anti_lag += '- Message has less than 2 minutes difference and\n'
             anti_lag += '- Message has been posted by the same user and\n'

@@ -80,9 +80,9 @@ class Bot(commands.Bot):
     async def on_member_join(self, member):
         if self.bleeding:
             self.log('Initiating verification procedure for user "{}".'.format(member.name))
-            msg  = 'Please send regiser followed by your EPITECH mail adress\n'
-            msg += 'i.e.: ```register yournam_e@epitech.eu```\n'
-            msg += 'It has to be an EPITECH adress, any other adress will not be accepted'
+            msg  = 'Please send !register followed by your EPITECH mail adress\n'
+            msg += 'i.e.: ```!register yournam_e@epitech.eu```\n'
+            msg += 'It has to be an EPITECH address, any other address will not be accepted'
             await self.send_message(member, msg)
             Verifier.add(member)
 
