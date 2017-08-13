@@ -28,12 +28,14 @@ class Stats:
             stats['Members'] = len(serv.members)
 
         if option in ['here', 'present', 'connected']:
+            stats['Total']     = 0
             stats['Connected'] = 0
             for member in serv.members:
                 if member.status == discord.Status.offline:
                     stats['Offline'] += 1
                 else:
                     stats['Connected'] += 1
+            stats['Total'] = stats['Connected'] + stats['Offline']
 
         if option == 'status' or option == 'statuses':
             stats['Connected'] = 0
