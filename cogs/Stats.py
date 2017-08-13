@@ -58,7 +58,7 @@ class Stats:
                 stats[role.name] = 0,0
             for member in serv.members:
                 for role in member.roles:
-                    stats[role.name][0] += member.status + discord.Status.offline
+                    stats[role.name][0] += member.status == discord.Status.offline
                     stats[role.name][1] += 1
 
         if option in ['game', 'games']:
