@@ -57,7 +57,7 @@ class Stats:
                 for role in member.roles:
                     stats[role.name] += 1
 
-        if option in ['role_here', 'roles_here', 'role_connected', 'roles_connected']
+        if option in ['role_here', 'roles_here', 'role_connected', 'roles_connected']:
             for role in serv.roles:
                 # Sorting roles in server's order
                 stats[role.name] = 0
