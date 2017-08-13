@@ -1,34 +1,29 @@
-import json, os.path
+import json, os.path, asyncio
 import discord
 from discord.ext import commands
 
-from Fun import Fun
+import config
+import cogs
+from Verifier import Verifier
 
 def main():
 
-    # variables
-    config_file = 'config.json'
-
-    # load config
-    with open(config_file) as f:
-        config = json.load(f)
-
-    # split config
-    description, token = config['description'], config['token']
-    verbose, bleeding  = config['verbose'], config['bleeding']
-
     # define bot
-    bot = Bot(description=description, verbose=verbose, bleeding=bleeding)
-    bot.add_cog(Fun(bot))
+    bot = Bot(description=config.description, verbose=config.verbose, bleeding=config.bleeding)
+    bot.add_cog(cogs.Fun  (bot))
+    bot.add_cog(cogs.Stats(bot))
 
     # launch bot
-    bot.run(token)
+    try:
+        bot.run(config.token)
+    except discord.errors.LoginFailure as e:
+        print(e, end='\n\n')
 
 class Bot(commands.Bot):
 
     def __init__(self, verbose=False, bleeding=False, *args, **kwargs):
         # Rewrite the command_prefix flag to force mention
-        super().__init__(*args, command_prefix=commands.when_mentioned, **kwargs)
+        super().__init__(*args, command_prefix=commands.when_mentioned_or('!'), **kwargs)
 
         self.admins  = []
         self.verbose  = verbose
@@ -42,23 +37,19 @@ class Bot(commands.Bot):
         self.log('Logged as {}#{}'.format(self.user.name, self.user.id))
         self.log('My boty is ready')
 
+
+    @asyncio.coroutine
+    def on_message(self, message):
+        yield from self.process_commands(message)
+
     async def on_member_join(self, member):
         if self.bleeding:
             self.log('Initiating verification procedure for user "{}".'.format(member.name))
-            await self.verify(member)
-
-    async def verify(self, member):
-        msg  = 'Please send your EPITECH mail adress\n'
-        msg += 'i.e.: ```yournam_e@epitech.eu```\n'
-        msg += 'It has to be an EPITECH adress, any other adress will not be accepted'
-
-        await self.send_message(member, msg)
-
-    def is_epitech(self, txt):
-        if txt[-11:] != '@epitech.eu':
-            return False
-        # TODO : mail username (check there are no @)
-        return True
+            msg  = 'Please send regiser followed by your EPITECH mail adress\n'
+            msg += 'i.e.: ```register yournam_e@epitech.eu```\n'
+            msg += 'It has to be an EPITECH adress, any other adress will not be accepted'
+            await self.send_message(member, msg)
+            Verifier.add(member)
 
 if __name__ == '__main__':
     main()
