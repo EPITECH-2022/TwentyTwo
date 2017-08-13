@@ -11,7 +11,8 @@ class Info:
     @commands.command(pass_context=True, no_pm=True)
     async def topic(self, context):
         ''' Tells the channel's topic '''
-        if context.message.channel.topic == '':
+        topic = context.message.channel.topic
+        if topic in [None, '', ' ']:
             await self.bot.reply('There is no topic set here.')
         else:
             embed = discord.Embed(description=context.message.channel.topic)
