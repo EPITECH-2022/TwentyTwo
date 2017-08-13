@@ -17,3 +17,16 @@ class Info:
         else:
             embed = discord.Embed(description=context.message.channel.topic)
             await self.bot.send_message(context.message.channel, embed=embed)
+
+    @commands.command()
+    async def info(self, what: str = None):
+        ''' Gives info about something '''
+        embed = discord.Embed()
+        if what in [None, 'bot']:
+            content  = 'I am a bot made and run by `Tina#4153`.\n'
+            content += 'Anyone can contribute to my code and add commands !\n'
+            content += 'Pleaase consider checking out the GitHub.'
+            url      = 'https://github.com/EPITECH-2022/TwentyTwo'
+            embed.add_field(name='url',         value=url)
+            embed.add_field(name='description', value=content)
+        await self.bot.reply(embed=embed)
