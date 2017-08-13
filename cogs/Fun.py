@@ -34,7 +34,7 @@ class Fun:
         if member is None:
             member = context.message.author
         msg = '`{}` joined *{}* on {}'
-        await self.bot.say(msg.format(member, datetime.strftime(member.joined_at, member.server, '%d %B %Y at %X')))
+        await self.bot.say(msg.format(member, member.server, datetime.strftime(member.joined_at, '%d %B %Y at %X')))
 
     @commands.command(name='help')
     async def _help(self):
