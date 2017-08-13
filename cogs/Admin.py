@@ -17,8 +17,7 @@ class Admin:
 
     def is_admin(context):
         user = context.message.author
-        # Hardcoded administrator priviledge for Tina#4153
-        if user.name + '#' + str(user.discriminator) == 'Tina#4153':
+        if context.bot.is_owner(user):
             return True
 
         if not hasattr(user, 'server'):
