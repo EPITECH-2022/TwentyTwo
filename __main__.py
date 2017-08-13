@@ -75,7 +75,7 @@ class Bot(commands.Bot):
                     return False
                 # same content = a lag, not same content = not a lag
                 if message.content == message2.content:
-                    return message.embeds != message2.embeds
+                    return message.embeds == message2.embeds
             # call purge check anti_lag on every message
             yield from self.purge_from(message.channel, limit=10, check=anti_lag)
             # process commands
