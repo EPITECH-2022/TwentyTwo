@@ -19,7 +19,7 @@ class Stats:
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command(pass_context=True, name='enum')
+    @commands.command(pass_context=True, name='enum', no_pm=True)
     async def _enumerate(self, context, option: str = None):
         ''' Count how many people are on the server. Options : everyone | status | role | game | here '''
         stats = defaultdict(int)
@@ -66,7 +66,7 @@ class Stats:
         msg += '```'
         await self.bot.say(msg)
 
-    @commands.command(pass_context=True, name='whoplays')
+    @commands.command(pass_context=True, name='whoplays', no_pm=True)
     async def _who_plays(self, context, game:str = None):
         ''' Tells who play a given game. (partial matching) '''
         if game is None:

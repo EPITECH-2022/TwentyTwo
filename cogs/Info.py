@@ -8,10 +8,11 @@ class Info:
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command(pass_context=True)
+    @commands.command(pass_context=True, no_pm=True)
     async def topic(self, context):
         ''' Tells the channel's topic '''
         if context.message.channel.topic == '':
             await self.bot.reply('There is no topic set here.')
         else:
-            await self.bot.say('"{0.message.channel.topic}"'.format(context))
+            embed = discord.Embed(description=context.message.channel.topic)
+            await self.bot.send_message(context.message.channel, embed=embed)

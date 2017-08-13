@@ -28,22 +28,33 @@ class Bot(commands.Bot):
         # Rewrite the command_prefix flag to force mention
         super().__init__(*args, command_prefix=commands.when_mentioned_or('!'), **kwargs)
 
-        self.admins  = []
-        self.verbose  = verbose
-        self.bleeding = bleeding
+        self.admins      = []
+        self.admin_roles = ['Administrateur']
+        self.verbose     = verbose
+        self.bleeding    = bleeding
 
     def log(self, txt):
         if self.verbose:
             print(txt)
+
+    async def report(self, context, error):
+        await self.add_reaction(context.message, '\N{THINKING FACE}')
+        msg   = 'Error !'
+        embed = discord.Embed(description=str(error), colour=discord.Colour.orange())
+        await self.send_message(context.message.channel, msg, embed=embed)
+
+    async def ok(self, context):
+        await self.add_reaction(context.message, '\N{OK HAND SIGN}')
 
     async def on_ready(self):
         self.log('Logged as {}#{}'.format(self.user.name, self.user.id))
         self.log('My boty is ready')
 
 
+
     @asyncio.coroutine
     def on_message(self, message):
-        yield from self.process_commands(message)
+            yield from self.process_commands(message)
 
     async def on_member_join(self, member):
         if self.bleeding:
