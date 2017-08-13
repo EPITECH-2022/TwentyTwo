@@ -20,15 +20,23 @@ class Stats:
         self.bot = bot
 
     @commands.command(pass_context=True, name='enum')
-    async def _enumerate(self, context, where: str = None):
-        ''' Count how many people are on the server. Options : everyone | status | role | game '''
+    async def _enumerate(self, context, option: str = None):
+        ''' Count how many people are on the server. Options : everyone | status | role | game | here '''
         stats = defaultdict(int)
         serv  = context.message.server
-        if where in [None, 'everyone']:
+        if option in [None, 'everyone']:
             stats['Members'] = len(serv.members)
 
-        if where == 'status' or where == 'statuses':
-            stats['Connected']      = 0
+        if option in ['here', 'present', 'connected']:
+            stats['Connected'] = 0
+            for member in serv.members:
+                if member.status == discord.Status.offline:
+                    stats['Offline'] += 1
+                else:
+                    stats['Connected'] += 1
+
+        if option == 'status' or option == 'statuses':
+            stats['Connected'] = 0
             for member in serv.members:
                 stats['Online']         += member.status == discord.Status.online
                 stats['Idle']           += member.status == discord.Status.idle
@@ -39,7 +47,7 @@ class Stats:
             stats['Connected'] = stats['Online'] + stats['Idle'] + stats['Do not disturb']
             stats['Total'] = stats['Connected'] + stats['Offline']
 
-        if where in ['role', 'roles']:
+        if option in ['role', 'roles']:
             for role in serv.roles:
                 # Sorting roles in server's order
                 stats[role.name] = 0
@@ -47,7 +55,7 @@ class Stats:
                 for role in member.roles:
                     stats[role.name] += 1
 
-        if where in ['game', 'games']:
+        if option in ['game', 'games']:
             for member in serv.members:
                 if member.game != None:
                     stats['Playing'] += 1
