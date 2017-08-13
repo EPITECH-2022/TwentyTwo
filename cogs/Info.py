@@ -42,8 +42,8 @@ class Info:
             info    = '- topic\n'
             info   += '- info [bot | command]'
             embed.add_field(name='Usage', value=header)
-            embed.add_field(name='Admin',  value=admin)
-            embed.add_field(name='Fun',    value=fun)
-            embed.add_field(name='Stats',  value=stats)
-            embed.add_field(name='Info',   value=info)
+            embed.add_field(name='Admin', value=admin)
+            embed.add_field(name='Fun',   value=fun)
+            embed.add_field(name='Stats', value=stats)
+            embed.add_field(name='Info',  value=info)
         await self.bot.send_message(context.message.channel, embed=embed)

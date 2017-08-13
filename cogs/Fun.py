@@ -1,3 +1,4 @@
+from unidecode import unidecode
 from datetime import datetime
 
 import discord
@@ -48,7 +49,7 @@ class Fun:
         msg = ''
         if context.invoked_with == 'ri':
             msg += '`{}`: '.format(context.message.author)
-        for c in content:
+        for c in unidecode(content):
             if c.isalpha():
                 msg += ':regional_indicator_{}:'.format(c.lower())
             else:
