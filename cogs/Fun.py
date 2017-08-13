@@ -79,4 +79,9 @@ class Fun:
         translator    = Translator()
         language      = translator.detect(content).lang[:2]
         pronunciation = translator.translate(content, dest=language).pronunciation
-        await self.bot.say('"{}" ({})'.format(pronunciation, language))
+        if pronunciation is None:
+            msg  = 'No specific pronunciation found for this text.\n'
+            msg += 'Detected language : {}'.format(language)
+            await self.bot.reply(msg)
+        else:
+            await self.bot.say('"{}" ({})'.format(pronunciation, language))
