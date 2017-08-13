@@ -1,6 +1,7 @@
 from unidecode   import unidecode
 from datetime    import datetime
 from googletrans import Translator
+import googletrans.constants
 
 import discord
 from discord.ext import commands
@@ -76,6 +77,6 @@ class Fun:
     async def pronunciation(self, context):
         content       = self.bot.get_text(context)
         translator    = Translator()
-        language      = translator.detect(content).lang
+        language      = translator.detect(content).lang[:2]
         pronunciation = translator.translate(content, dest=language).pronunciation
-        await self.bot.say('"{}"'.format(pronunciation))
+        await self.bot.say('"{}" ({})'.format(pronunciation, language))
