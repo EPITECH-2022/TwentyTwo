@@ -27,6 +27,6 @@ class Info:
             content += 'Anyone can contribute to my code and add commands !\n'
             content += 'Pleaase consider checking out the GitHub.'
             url      = 'https://github.com/EPITECH-2022/TwentyTwo'
-            embed.add_field(name='url',         value=url)
-            embed.add_field(name='description', value=content)
+            embed.add_field(name='Description', value=content)
+            embed.add_field(name='GitHub',      value=url)
         await self.bot.send_message(context.message.channel, embed=embed)
