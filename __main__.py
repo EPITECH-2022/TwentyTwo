@@ -44,7 +44,10 @@ class Bot(commands.Bot):
         return context.message.content[(len(context.prefix + context.invoked_with)) + 1:]
 
     async def report(self, context, error):
-        await self.add_reaction(context.message, '\N{THINKING FACE}')
+        try:
+            await self.add_reaction(context.message, '\N{THINKING FACE}')
+        except discord.errors.NotFound:
+            pass
         msg   = 'Error !'
         embed = discord.Embed(description=str(error), colour=discord.Colour.orange())
         await self.send_message(context.message.channel, msg, embed=embed)
@@ -72,7 +75,7 @@ class Bot(commands.Bot):
                     return False
                 # same content = a lag, not same content = not a lag
                 if message.content == message2.content:
-                    return message.embeds == message2.embeds
+                    return message.embeds != message2.embeds
             # call purge check anti_lag on every message
             yield from self.purge_from(message.channel, limit=10, check=anti_lag)
             # process commands

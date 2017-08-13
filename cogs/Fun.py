@@ -89,7 +89,10 @@ class Fun:
             msg += 'Detected language : {}'.format(language)
             await self.bot.reply(msg)
         else:
-            await self.bot.say('"{}" ({})'.format(pronunciation, language))
+            embed = discord.Embed(colour=discord.Colour.dark_blue())
+            embed.add_field(name='Pronunciation', value=pronunciation)
+            embed.set_footer(text=language)
+            await self.bot.say(embed=embed)
 
     @commands.command(pass_context=True, aliases=['trad', 'trans', 'traduit'])
     async def translate(self, context):
@@ -100,11 +103,12 @@ class Fun:
         content       = content[3:]
         try:
             translated    = translator.translate(content, dest=language)
-            msg = translated.text
-            pronunciation = translator.translate(content, dest=language).pronunciation
-            if pronunciation != None:
-                msg += ' ("{}")'.format(pronunciation)
-            msg += ' ({} -> {})'.format(translated.src, translated.dest)
-            await self.bot.say(msg)
+            embed = discord.Embed(colour=discord.Colour.dark_blue())
+            embed.add_field(name='Translation', value=translated.text)
+            embed.set_footer(text='{} -> {}'.format(translated.src, translated.dest))
+            pronunciation = translator.translate(translated.text, dest=language).pronunciation
+            if pronunciation != None and pronunciation != translated.text:
+                embed.add_field(name='Pronunciation', value=pronunciation)
+            await self.bot.say(embed=embed)
         except ValueError as e:
             await self.bot.report(context, e)

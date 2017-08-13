@@ -71,22 +71,26 @@ class Admin:
 
     @commands.command(pass_context=True, aliases=['cls', 'clear'], hidden=True)
     @commands.check(is_admin)
-    async def clean(self, context, limit=100):
+    async def clean(self, context, limit: int = 100):
         def predicate(message):
-            return message.author == message.server.me
+            return message.author == self.bot.user
         try:
             message = context.message
-            await self.bot.purge_from(message.channel, limit=limit, check=predicate)
-            await self.bot.ok(context)
+            deleted = await self.bot.purge_from(message.channel, limit=limit, check=predicate)
+            await self.bot.say('Deleted {} messages.'.format(len(deleted)))
         except Exception as e:
             await self.bot.report(context, e)
 
     @commands.command(pass_context=True, hidden=True)
     @commands.check(is_admin)
-    async def purge(self, context, limit=100):
+    async def purge(self, context, limit: int = 100, user: discord.Member = None):
+        check = None
+        if user != None:
+            def is_user(message):
+                return message.author == user
         try:
             message = context.message
-            await self.bot.purge_from(message.channel, limit=limit)
-            await self.bot.ok(content)
+            deleted = await self.bot.purge_from(message.channel, limit=limit, check=is_user)
+            await self.bot.say('Deleted {} messages.'.format(len(deleted)))
         except Exception as e:
             await self.bot.report(context, e)
