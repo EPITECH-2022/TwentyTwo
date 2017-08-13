@@ -1,3 +1,5 @@
+from collections import defaultdict
+
 import discord
 from discord.ext import commands
 
@@ -19,31 +21,37 @@ class Stats:
 
     @commands.command(pass_context=True, name='enum')
     async def _enumerate(self, context, where: str = None):
-        stats = {}
+        ''' Count how many people are on the server. Options : everyone | status | role | game '''
+        stats = defaultdict(int)
         serv  = context.message.server
-        if where is None or where == 'everyone':
+        if where in [None, 'everyone']:
             stats['Members'] = len(serv.members)
 
         if where == 'status' or where == 'statuses':
             stats['Connected']      = 0
-            stats['Online']         = 0
-            stats['Idle']           = 0
-            stats['Do not disturb'] = 0
-            stats['Offline']        = 0
             for member in serv.members:
                 stats['Online']         += member.status == discord.Status.online
                 stats['Idle']           += member.status == discord.Status.idle
                 stats['Do not disturb'] += member.status == discord.Status.dnd
+                stats['Playing']        += member.game != None
+                stats['Streaming']      += member.game !=None and member.game.type == 1
                 stats['Offline']        += member.status == discord.Status.offline
             stats['Connected'] = stats['Online'] + stats['Idle'] + stats['Do not disturb']
             stats['Total'] = stats['Connected'] + stats['Offline']
 
-        if where == 'role' or where == 'roles':
+        if where in ['role', 'roles']:
             for role in serv.roles:
+                # Sorting roles in server's order
                 stats[role.name] = 0
             for member in serv.members:
                 for role in member.roles:
                     stats[role.name] += 1
+
+        if where in ['game', 'games']:
+            for member in serv.members:
+                if member.game != None:
+                    stats['Playing'] += 1
+                    stats[member.game.name] += 1
 
         msg = '```\n'
         msg += format_keyvalues(stats)
@@ -52,6 +60,7 @@ class Stats:
 
     @commands.command(pass_context=True, name='whoplays')
     async def _who_plays(self, context, game:str = None):
+        ''' Tells who play a given game. (partial matching) '''
         if game is None:
             await self.bot.reply('Please input a game name.')
             return

@@ -11,12 +11,12 @@ class Fun:
     @commands.command()
     async def hello(self):
         ''' says the robot '''
-        await self.bot.reply('Hi!')
+        await self.bot.reply('hi!')
 
     @commands.command()
     async def hi(self):
         ''' says the IA '''
-        await self.bot.reply('Hello!')
+        await self.bot.reply('hello!')
 
     @commands.command(pass_context=True)
     async def age(self, context, member: discord.Member = None):
@@ -24,3 +24,7 @@ class Fun:
         if member is None:
             member = context.message.author
         await self.bot.say('`{0}` joined Discord at {0.created_at}'.format(member))
+
+    @commands.command()
+    async def help(self):
+        await self.bot.reply('ask `Tina#4153`')
