@@ -57,6 +57,21 @@ class Info:
             embed.add_field(name='GitHub', value=github)
             embed.add_field(name='Git',    value=git)
             embed.add_field(name='Check this bot on GitHub', value=link)
+        elif what in ['lag', '3g', '3G', 'h+', 'H+', 'doublon']:
+            lagging   = 'Discord has no native anti lag. That means when someone\n'
+            lagging  += 'is on a slow connection, there is a potential risk that\n'
+            lagging  += 'the message he is trying to send will be sent multiple\n'
+            lagging  += 'times. That is no good.'
+            anti_lag  = 'To prevent this, this bot is designed with an automatic\n'
+            anti_lag += 'message purging. On every message it will check a very\n'
+            anti_lag += 'specific predicate on the 10 previous messages. Here is\n'
+            anti_lag += 'the specs :\n'
+            anti_lag += '- Message has the same content and\n'
+            anti_lag += '- Message has less than 2 minutes difference and\n'
+            anti_lag += '- Message has been posted by the same user and\n'
+            anti_lag += '- Message has not the same unique ID.'
+            embed.add_field(name='Lagging',  value=lagging)
+            embed.add_field(name='Anti-Lag', value=anti_lag)
         else:
             return
         await self.bot.send_message(context.message.channel, embed=embed)
