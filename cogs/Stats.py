@@ -58,7 +58,7 @@ class Stats:
         if option in ['game', 'games']:
             for member in serv.members:
                 if member.game != None:
-                    stats['Playing'] += 1
+                    stats['Playing']        += 1
                     stats[member.game.name] += 1
 
         msg = '```\n'

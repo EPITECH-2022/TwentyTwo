@@ -53,3 +53,19 @@ class Admin:
             await self.bot.ok(context)
         except discord.errors.Forbidden as e:
             await self.bot.report(context, e)
+
+    @commands.command(pass_context=True)
+    @commands.check(is_admin)
+    async def edit(self, context, field: str = None, value: str = None):
+        if field is None or value is None:
+            await self.bot.reply('Please set a field/value.')
+            return
+        username = None
+        #TODO avatar   = None
+        if field == 'username':
+            username = value
+        try:
+            await self.bot.edit_profile(username=username)
+            await self.bot.ok(context)
+        except Error:
+            await self.bot.report(context, e)
