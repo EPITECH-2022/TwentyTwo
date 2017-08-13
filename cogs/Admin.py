@@ -15,7 +15,7 @@ class Admin:
             return True
 
         if not hasattr(user, 'server'):
-            await self.bot.reply('Admin commands can only be used by `Tina#4153` when outside of a server')
+            await self.bot.send_message(user, 'Admin commands can only be used by `Tina#4153` when outside of a server')
 
         roles = user.server.roles
         i = len(roles) - 1
