@@ -69,7 +69,7 @@ class Admin:
         except Exception as e:
             await self.bot.report(context, e)
 
-    @commands.command(pass_context=True, aliases=['cls'], hidden=True)
+    @commands.command(pass_context=True, aliases=['cls', 'clear'], hidden=True)
     @commands.check(is_admin)
     async def clean(self, context, limit=100):
         def predicate(message):
@@ -77,7 +77,7 @@ class Admin:
         try:
             message = context.message
             await self.bot.purge_from(message.channel, limit=limit, check=predicate)
-            await self.bot.ok(message)
+            await self.bot.ok(context)
         except Exception as e:
             await self.bot.report(context, e)
 
@@ -87,6 +87,6 @@ class Admin:
         try:
             message = context.message
             await self.bot.purge_from(message.channel, limit=limit)
-            await self.bot.ok(message)
+            await self.bot.ok(content)
         except Exception as e:
             await self.bot.report(context, e)

@@ -1,4 +1,4 @@
-import json, os.path, asyncio
+import json, os.path, asyncio, datetime
 
 import discord
 from discord.ext import commands
@@ -60,6 +60,21 @@ class Bot(commands.Bot):
 
     @asyncio.coroutine
     def on_message(self, message):
+            def anti_lag(message2):
+                # same id = not a lag
+                if message.id == message2.id:
+                    return False
+                # different author = not a lag
+                if message.author != message2.author:
+                    return False
+                # more than 2 minutes delta = not a lag
+                if message.timestamp - message2.timestamp > datetime.timedelta(0, 120):
+                    return False
+                # same content = a lag, not same content = not a lag
+                return message.content == message2.content
+            # call purge check anti_lag on every message
+            yield from self.purge_from(message.channel, limit=10, check=anti_lag)
+            # process commands
             yield from self.process_commands(message)
 
     async def on_member_join(self, member):
