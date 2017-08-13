@@ -36,6 +36,7 @@ class Info:
             admin  += '- edit ["field"] ["value"] (edit the bot account)'
             fun     = '- hello, - hi, - help\n'
             fun    += '- age [[@user]], - joined [[@user]]'
+            fun    += '- ri ["text to convert to emoji"]'
             stats   = '- enum [everyone | status | role | game | here]\n'
             stats  += '- whoplays ["partial matching text"]'
             info    = '- topic\n'
