@@ -49,9 +49,9 @@ class Fun:
         msg = ''
         if context.invoked_with == 'ri':
             msg += '`{}`: '.format(context.message.author)
-        for c in unidecode(content):
+        for c in content:
             if c.isalpha():
-                msg += ':regional_indicator_{}:'.format(c.lower())
+                msg += ':regional_indicator_{}:'.format(unidecode(c.lower()))
             else:
                 msg += c
         await self.bot.say(msg)
