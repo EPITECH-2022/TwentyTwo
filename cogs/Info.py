@@ -19,7 +19,7 @@ class Info:
             await self.bot.send_message(context.message.channel, embed=embed)
 
     @commands.command()
-    async def info(self, what: str = None):
+    async def info(self, context, what: str = None):
         ''' Gives info about something '''
         embed = discord.Embed()
         if what in [None, 'bot']:
@@ -29,4 +29,4 @@ class Info:
             url      = 'https://github.com/EPITECH-2022/TwentyTwo'
             embed.add_field(name='url',         value=url)
             embed.add_field(name='description', value=content)
-        await self.bot.reply(embed=embed)
+        await self.bot.reply('', embed=embed)
