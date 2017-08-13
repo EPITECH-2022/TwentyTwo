@@ -7,3 +7,4 @@ Highly recommended :
 # Dependencies
 - discord.py
 - unidecode
+- googletrans
