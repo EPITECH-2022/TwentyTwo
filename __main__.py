@@ -71,7 +71,8 @@ class Bot(commands.Bot):
                 if message.timestamp - message2.timestamp > datetime.timedelta(0, 120):
                     return False
                 # same content = a lag, not same content = not a lag
-                return message.content == message2.content
+                if message.content == message2.content:
+                    return message.embeds == message2.embeds
             # call purge check anti_lag on every message
             yield from self.purge_from(message.channel, limit=10, check=anti_lag)
             # process commands
