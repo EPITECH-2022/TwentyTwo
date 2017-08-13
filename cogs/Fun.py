@@ -46,9 +46,16 @@ class Fun:
         if content in [None, '', ' ']:
             return
         msg = ''
+        if context.invoked_with == 'ri':
+            msg += '`{}`: '.format(context.message.author)
         for c in content:
             if c.isalpha():
                 msg += ':regional_indicator_{}:'.format(c.lower())
             else:
                 msg += c
         await self.bot.say(msg)
+        if context.invoked_with == 'ri':
+            try:
+                await self.bot.delete_message(context.message)
+            except discord.errors.Forbidden:
+                pass
