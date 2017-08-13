@@ -60,3 +60,10 @@ class Fun:
                 await self.bot.delete_message(context.message)
             except discord.errors.Forbidden:
                 pass
+
+    @commands.command(pass_context=True)
+    async def decode(self, context):
+        content = context.message.content[(len(context.prefix + context.invoked_with)) + 1:]
+        if content in [None, ' ']:
+            return
+        await self.bot.say(unidecode(content))
