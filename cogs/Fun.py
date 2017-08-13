@@ -47,7 +47,7 @@ class Fun:
             return
         msg = ''
         for c in content:
-            if c.isalpha()
+            if c.isalpha():
                 msg += ':regional_indicator_{}:'.format(c)
             else:
                 msg += c
