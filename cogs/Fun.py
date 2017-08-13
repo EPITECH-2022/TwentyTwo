@@ -10,9 +10,6 @@ class Fun:
     def __init__(self, bot):
         self.bot = bot
 
-    def is_owner(context):
-        return user.name + '#' + str(user.discriminator) == 'Tina#4153'
-
     @commands.command()
     async def hello(self):
         ''' says the robot '''
@@ -46,7 +43,7 @@ class Fun:
     @commands.command(pass_context=True, aliases=['ri', 'riz', 'regional_indicator'])
     async def emoji(self, context):
         content = context.message.content[(len(context.prefix + context.invoked_with)) + 1:]
-        if content in [None, '', ' '] or context.invoked_with == 'riz' and not is_owner(context):
+        if content in [None, '', ' '] or context.invoked_with == 'riz' and not self.bot.is_owner(context.message.author):
             return
         msg = ''
         if context.invoked_with == 'ri':

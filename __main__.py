@@ -38,6 +38,9 @@ class Bot(commands.Bot):
         if self.verbose:
             print(txt)
 
+    def is_owner(self, user):
+        return user.name + '#' + str(user.discriminator) == 'Tina#4153'
+
     async def report(self, context, error):
         await self.add_reaction(context.message, '\N{THINKING FACE}')
         msg   = 'Error !'
