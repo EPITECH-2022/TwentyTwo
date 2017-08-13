@@ -57,7 +57,7 @@ class Info:
             embed.add_field(name='GitHub', value=github)
             embed.add_field(name='Git',    value=git)
             embed.add_field(name='Check this bot on GitHub', value=link)
-        elif what in ['lag', '3g', '3G', 'h+', 'H+', 'doublon', 'anti-lag', 'antilag']:
+        elif what in ['lag', 'lagging', '3g', '3G', 'h+', 'H+', 'doublon', 'anti-lag', 'antilag']:
             lagging   = 'Discord has no native anti lag. That means when someone\n'
             lagging  += 'is on a slow connection, there is a potential risk that\n'
             lagging  += 'the message he is trying to send will be sent multiple\n'
