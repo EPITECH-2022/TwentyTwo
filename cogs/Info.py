@@ -30,7 +30,7 @@ class Info:
             embed.add_field(name='Description', value=content)
             embed.add_field(name='GitHub',      value=url)
         if what in ['command', 'commands']:
-            header  = 'Commands are prefixed by a mention to `{}`'.format(self.bot)
+            header  = 'Commands are prefixed by a mention to `{}` or a `!`'.format(self.bot.me)
             admin   = '- kill\n'
             admin  += '- ban [@user] [["reason"]] [[delete message (days)]]\n'
             admin  += '- edit ["field"] ["value"] (edit the bot account)'
@@ -40,7 +40,7 @@ class Info:
             stats  += '- whoplays ["partial matching text"]'
             info    = '- topic\n'
             info   += '- info [bot | command]'
-            embed.add_field(name='Header', value=header)
+            embed.add_field(name='Usage', value=header)
             embed.add_field(name='Admin',  value=admin)
             embed.add_field(name='Fun',    value=fun)
             embed.add_field(name='Stats',  value=stats)
