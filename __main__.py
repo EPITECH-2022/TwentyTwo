@@ -41,6 +41,9 @@ class Bot(commands.Bot):
     def is_owner(self, user):
         return user.name + '#' + str(user.discriminator) == 'Tina#4153'
 
+    def get_text(self, context):
+        return context.message.content[(len(context.prefix + context.invoked_with)) + 1:]
+
     async def report(self, context, error):
         await self.add_reaction(context.message, '\N{THINKING FACE}')
         msg   = 'Error !'

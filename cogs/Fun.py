@@ -1,5 +1,6 @@
-from unidecode import unidecode
-from datetime import datetime
+from unidecode   import unidecode
+from datetime    import datetime
+from googletrans import Translator
 
 import discord
 from discord.ext import commands
@@ -43,7 +44,7 @@ class Fun:
 
     @commands.command(pass_context=True, aliases=['ri', 'riz', 'regional_indicator'])
     async def emoji(self, context):
-        content = context.message.content[(len(context.prefix + context.invoked_with)) + 1:]
+        content = self.bot.get_text(context)
         if content in [None, '', ' '] or context.invoked_with == 'riz' and not self.bot.is_owner(context.message.author):
             return
         msg = ''
@@ -63,10 +64,18 @@ class Fun:
 
     @commands.command(pass_context=True)
     async def decode(self, context):
-        content = context.message.content[(len(context.prefix + context.invoked_with)) + 1:]
+        content = self.bot.get_text(context)
         if content in [None, ' ']:
             return
         msg = unidecode(content)
         if msg is None:
             return
         await self.bot.say(msg)
+
+    @commands.command(pass_context=True, aliases=['prononciation', 'pron'])
+    async def pronunciation(self, context):
+        content       = self.bot.get_text(context)
+        translator    = Translator()
+        language      = translator.detect(content).lang
+        pronunciation = translator.translate(content, dest=language).pronunciation
+        await self.bot.say('"{}"'.format(pronunciation))
