@@ -50,7 +50,7 @@ class Admin:
             await self.bot.send_message(user, embed=embed)
             await self.bot.ban(user, delete_message_days=delete)
             await self.bot.ok(context)
-        except discord.errors.Forbidden as e:
+        except Exception as e:
             await self.bot.report(context, e)
 
     @commands.command(pass_context=True)
@@ -66,5 +66,27 @@ class Admin:
         try:
             await self.bot.edit_profile(username=username)
             await self.bot.ok(context)
-        except Error:
+        except Exception as e:
+            await self.bot.report(context, e)
+
+    @commands.command(pass_context=True, aliases=['cls'])
+    @commands.check(is_admin)
+    async def clean(self, context, limit=100):
+        def predicate(message):
+            return message.author == message.server.me
+        try:
+            message = context.message
+            await self.bot.purge_from(message.channel, limit=limit, check=predicate)
+            await self.bot.ok(message)
+        except Exception as e:
+            await self.bot.report(context, e)
+
+    @commands.command(pass_context=True)
+    @commands.check(is_admin)
+    async def purge(self, context, limit=100):
+        try:
+            message = context.message
+            await self.bot.purge_from(message.channel, limit=limit)
+            await self.bot.ok(message)
+        except Exception as e:
             await self.bot.report(context, e)

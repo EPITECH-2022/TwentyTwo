@@ -38,6 +38,8 @@ class Info:
             fun    += '- age [[@user]], - joined [[@user]]'
             fun    += '- emoji | ri ["text to convert to emoji"]'
             fun    += '- decode ["text"]'
+            fun    += '- trad ["language (2 characters)"] ["text"]'
+            fun    += '- pronunciation | pron ["text"]'
             stats   = '- enum [everyone | status | role | game | here]\n'
             stats  += '- whoplays ["partial matching text"]'
             info    = '- topic\n'
