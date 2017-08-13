@@ -35,7 +35,7 @@ class Info:
             admin  += '- ban [@user] [["reason"]] [[delete message (days)]]\n'
             admin  += '- edit ["field"] ["value"] (edit the bot account)'
             fun     = '- hello, - hi, - help\n'
-            fun    += '- age [[@user]]'
+            fun    += '- age [[@user]], - joined [[@user]]'
             stats   = '- enum [everyone | status | role | game | here]\n'
             stats  += '- whoplays ["partial matching text"]'
             info    = '- topic\n'
