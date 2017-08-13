@@ -8,7 +8,10 @@ def format_keyvalues(dictionary):
     width = len(max(dictionary.keys(), key=len))
     f     = '{0:>%d}: {1}\n' % (width)
     for key, value in dictionary.items():
-        r += f.format(key, value)
+        if isinstance(value, tuple):
+            r += f.format(key, '{}/{}'.format(value[0], value[1]))
+        else:
+            r += f.format(key, value)
     return r
 
 
@@ -52,19 +55,11 @@ class Stats:
         if option in ['role', 'roles']:
             for role in serv.roles:
                 # Sorting roles in server's order
-                stats[role.name] = 0
+                stats[role.name] = 0,0
             for member in serv.members:
                 for role in member.roles:
-                    stats[role.name] += 1
-
-        if option in ['role_here', 'roles_here', 'role_connected', 'roles_connected']:
-            for role in serv.roles:
-                # Sorting roles in server's order
-                stats[role.name] = 0
-            for member in serv.members:
-                if member.status != discord.Status.offline:
-                    for role in member.roles:
-                        stats[role.name] += 1
+                    stats[role.name][0] += member.status + discord.Status.offline
+                    stats[role.name][1] += 1
 
         if option in ['game', 'games']:
             for member in serv.members:
