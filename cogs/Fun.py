@@ -40,7 +40,7 @@ class Fun:
     async def _help(self):
         await self.bot.reply('ask `Tina#4153`')
 
-    @commands.command(pass_context=True, aliases=['ri', 'regional_indicator'])
+    @commands.command(pass_context=True, aliases=['ri', 'riz', 'regional_indicator'])
     async def emoji(self, context):
         content = context.message.content[(len(context.prefix + context.invoked_with)) + 1:]
         if content in [None, '', ' ']:
@@ -54,7 +54,7 @@ class Fun:
             else:
                 msg += c
         await self.bot.say(msg)
-        if context.invoked_with == 'ri':
+        if context.invoked_with in ['ri', 'riz']:
             try:
                 await self.bot.delete_message(context.message)
             except discord.errors.Forbidden:
