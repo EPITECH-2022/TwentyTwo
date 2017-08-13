@@ -29,4 +29,20 @@ class Info:
             url      = 'https://github.com/EPITECH-2022/TwentyTwo'
             embed.add_field(name='Description', value=content)
             embed.add_field(name='GitHub',      value=url)
+        if what in ['command', 'commands']:
+            header  = 'Commands are prefixed by a mention to `{}`'.format(self.bot)
+            admin   = '- kill\n'
+            admin  += '- ban [@user] [["reason"]] [[delete message (days)]]\n'
+            admin  += '- edit ["field"] ["value"] (edit the bot account)'
+            fun     = '- hello, - hi, - help\n'
+            fun    += '- age [[@user]]'
+            stats   = '- enum [everyone | status | role | game | here]\n'
+            stats  += '- whoplays ["partial matching text"]'
+            info    = '- topic\n'
+            info   += '- info [bot | command]'
+            embed.add_field(name='Header', value=header)
+            embed.add_field(name='Admin',  value=admin)
+            embed.add_field(name='Fun',    value=fun)
+            embed.add_field(name='Stats',  value=stats)
+            embed.add_field(name='Info',   value=info)
         await self.bot.send_message(context.message.channel, embed=embed)

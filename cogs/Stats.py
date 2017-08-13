@@ -37,7 +37,7 @@ class Stats:
                     stats['Connected'] += 1
             stats['Total'] = stats['Connected'] + stats['Offline']
 
-        if option == 'status' or option == 'statuses':
+        if option in ['status', 'statuses']:
             stats['Connected'] = 0
             for member in serv.members:
                 stats['Online']         += member.status == discord.Status.online
