@@ -66,4 +66,7 @@ class Fun:
         content = context.message.content[(len(context.prefix + context.invoked_with)) + 1:]
         if content in [None, ' ']:
             return
-        await self.bot.say(unidecode(content))
+        msg = unidecode(content)
+        if msg is None:
+            return
+        await self.bot.say(msg)
