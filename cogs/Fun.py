@@ -39,3 +39,12 @@ class Fun:
     @commands.command(name='help')
     async def _help(self):
         await self.bot.reply('ask `Tina#4153`')
+
+    @commands.command(pass_context=True)
+    async def emoji(self, context)
+        if context.subcommad_passed is None:
+            return
+        msg = ''
+        for c in context.subcommand_passed:
+            msg += ':regional_indicator_{}'.format(c)
+        await self.bot.say(msg)
