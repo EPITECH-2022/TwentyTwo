@@ -12,6 +12,7 @@ def main():
     bot = Bot(description=config.description, verbose=config.verbose, bleeding=config.bleeding)
     bot.add_cog(cogs.Fun  (bot))
     bot.add_cog(cogs.Stats(bot))
+    bot.add_cog(cogs.Info (bot))
 
     # launch bot
     try:

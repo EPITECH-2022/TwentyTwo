@@ -12,7 +12,10 @@ class Stats:
     async def _enumerate(self, context, where: str = None):
         stats = {}
         serv  = context.message.server
-        if where is None or where == 'status':
+        if where is None or where == 'everyone':
+            stats['Members'] = len(serv.members)
+
+        if where == 'status' or where == 'statuses':
             stats['Connected']      = 0
             stats['Online']         = 0
             stats['Idle']           = 0
@@ -26,7 +29,7 @@ class Stats:
             stats['Connected'] = stats['Online'] + stats['Idle'] + stats['Do not disturb']
             stats['Total'] = stats['Connected'] + stats['Offline']
 
-        if where == 'role':
+        if where == 'role' or where == 'roles':
             for role in serv.roles:
                 stats[role.name] = 0
             for member in serv.members:
