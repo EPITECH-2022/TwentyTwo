@@ -41,7 +41,7 @@ class Fun:
         await self.bot.reply('ask `Tina#4153`')
 
     @commands.command(pass_context=True)
-    async def emoji(self, context)
+    async def emoji(self, context):
         if context.subcommad_passed is None:
             return
         msg = ''
