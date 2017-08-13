@@ -1,6 +1,15 @@
 import discord
 from discord.ext import commands
 
+def format_keyvalues(dictionary):
+    r     = ''
+    width = len(max(dictionary.keys(), key=len))
+    f     = '{0:>%d}: {1}\n' % (width)
+    for key, value in dictionary.items():
+        r += f.format(key, value)
+    return r
+
+
 class Stats:
     '''
     A collection of commands to get statistics
@@ -36,10 +45,25 @@ class Stats:
                 for role in member.roles:
                     stats[role.name] += 1
 
-        width = len(max(stats.keys(), key=len))
-        f     = '{0:>%d}: {1}\n' % (width)
         msg = '```\n'
-        for key, value in stats.items():
-            msg += f.format(key, value)
+        msg += format_keyvalues(stats)
+        msg += '```'
+        await self.bot.say(msg)
+
+    @commands.command(pass_context=True, name='whoplays')
+    async def _who_plays(self, context, game:str = None):
+        if game is None:
+            await self.bot.reply('Please input a game name.')
+            return
+        found = []
+        game = game.casefold()
+        for member in context.message.server.members:
+            if member.game != None and game in member.game.name.casefold():
+                found.append(member)
+
+        msg  = '```'
+        msg += 'Total: {}\n'.format(len(found))
+        for member in found:
+            msg += '- {} ({})\n'.format(member, member.game)
         msg += '```'
         await self.bot.say(msg)
