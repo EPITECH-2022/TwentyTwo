@@ -85,3 +85,20 @@ class Fun:
             await self.bot.reply(msg)
         else:
             await self.bot.say('"{}" ({})'.format(pronunciation, language))
+
+    @commands.command(pass_context=True, aliases=['trad', 'trans', 'traduit'])
+    async def translate(self, context):
+        content       = self.bot.get_text(context)
+        translator    = Translator()
+        language      = content[:2]
+        content       = content[3:]
+        try:
+            translated    = translator.translate(content, dest=language)
+            msg = translated.text
+            pronunciation = translator.translate(content, dest=language).pronunciation
+            if pronunciation != None:
+                msg += ' ("{}")'.format(pronunciation)
+            msg += ' ({} -> {})'.format(translated.src, translated.dest)
+            await self.bot.say(msg)
+        except ValueError as e:
+            await self.bot.report(context, e)
