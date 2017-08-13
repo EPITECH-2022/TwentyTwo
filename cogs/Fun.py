@@ -48,7 +48,7 @@ class Fun:
         msg = ''
         for c in content:
             if c.isalpha():
-                msg += ':regional_indicator_{}:'.format(c)
+                msg += ':regional_indicator_{}:'.format(c.lower())
             else:
                 msg += c
         await self.bot.say(msg)
