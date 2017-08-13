@@ -42,7 +42,7 @@ class Fun:
 
     @commands.command(pass_context=True)
     async def emoji(self, context):
-        if context.subcommad_passed is None:
+        if context.subcommand_passed is None:
             return
         msg = ''
         for c in context.subcommand_passed:
