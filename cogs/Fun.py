@@ -1,7 +1,5 @@
 from unidecode   import unidecode
 from datetime    import datetime
-from googletrans import Translator
-import googletrans.constants
 
 import discord
 from discord.ext import commands
@@ -30,14 +28,16 @@ class Fun:
             member = context.message.author
         msg = '`{}` joined Discord on {}'
         await self.bot.say(msg.format(member, datetime.strftime(member.created_at, '%d %B %Y at %X')))
+        await self.bot.replied(context)
 
     @commands.command(pass_context=True)
     async def joined(self, context, member: discord.Member = None):
-        ''' Tells the age of a Discord account '''
+        ''' Tells the age of a member on this Discord account '''
         if member is None:
             member = context.message.author
         msg = '`{}` joined *{}* on {}'
         await self.bot.say(msg.format(member, member.server, datetime.strftime(member.joined_at, '%d %B %Y at %X')))
+        await self.bot.replied(context)
 
     '''
     @commands.command(name='help')
@@ -60,6 +60,7 @@ class Fun:
             else:
                 msg += c
         await self.bot.say(msg)
+        await self.bot.replied(context)
         if context.invoked_with in ['ri', 'riz']:
             try:
                 await self.bot.delete_message(context.message)
@@ -71,16 +72,20 @@ class Fun:
         ''' Convert any character to its ASCII counterpart '''
         content = self.bot.get_text(context)
         if content in [None, ' ']:
+            await self.bot.doubt(context)
             return
         msg = unidecode(content)
         if msg is None:
+            await self.bot.doubt(context)
             return
         await self.bot.say(msg)
+        await self.bot.replied(context)
 
     @commands.command(pass_context=True, aliases=['prononciation', 'pron'])
     async def pronunciation(self, context):
         ''' Uses Google API to fetch the pronunciation of a word (useful for Japanese, Korean, etc) '''
         content       = self.bot.get_text(context)
+        from googletrans import Translator
         translator    = Translator()
         language      = translator.detect(content).lang[:2]
         pronunciation = translator.translate(content, dest=language).pronunciation
@@ -88,16 +93,19 @@ class Fun:
             msg  = 'No specific pronunciation found for this text.\n'
             msg += 'Detected language : {}'.format(language)
             await self.bot.reply(msg)
+            await self.bot.replied(context)
         else:
             embed = discord.Embed(colour=discord.Colour.dark_blue())
             embed.add_field(name='Pronunciation', value=pronunciation)
             embed.set_footer(text=language)
             await self.bot.say(embed=embed)
+            await self.bot.replied(context)
 
     @commands.command(pass_context=True, aliases=['trad', 'trans', 'traduit'])
     async def translate(self, context):
         ''' Translates a text to a destination language '''
         content       = self.bot.get_text(context)
+        from googletrans import Translator
         translator    = Translator()
         language      = content[:2]
         content       = content[3:]
@@ -110,5 +118,29 @@ class Fun:
             if pronunciation != None and pronunciation != translated.text:
                 embed.add_field(name='Pronunciation', value=pronunciation)
             await self.bot.say(embed=embed)
+            await self.bot.replied(context)
         except ValueError as e:
             await self.bot.report(context, e)
+
+    @commands.command(pass_context=True, aliases=['wiki'])
+    async def wikipedia(self, context):
+        ''' Get a page from wikipedia and reply with an embed '''
+        query = self.bot.get_text(context)
+        if query in [None, '', ' ']:
+            await self.bot.doubt(context)
+            return
+        try:
+            import wikipedia
+            page    = wikipedia.page(query)
+            embed   = discord.Embed(title=page.title, description=page.summary, url=page.url)
+            try:
+                if len(page.images) > 0:
+                    embed.set_image(url=page.images[0])
+            except KeyError:
+                pass
+            await self.bot.say(embed=embed)
+            await self.bot.replied(context)
+        except wikipedia.DisambiguationError as e:
+            msg = '```\n{}\n```'.format(e)
+            await self.bot.doubt(context)
+            await self.bot.say(msg)

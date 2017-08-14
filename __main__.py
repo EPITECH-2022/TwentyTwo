@@ -24,7 +24,7 @@ def main():
 
 class Bot(commands.Bot):
 
-    def __init__(self, verbose=False, bleeding=False, *args, **kwargs):
+    def __init__(self, verbose=False, bleeding=False, reactive=True, *args, **kwargs):
         # Rewrite the command_prefix flag to force mention
         super().__init__(*args, command_prefix=commands.when_mentioned_or('!'), **kwargs)
 
@@ -32,6 +32,7 @@ class Bot(commands.Bot):
         self.admin_roles = ['Administrateur']
         self.verbose     = verbose
         self.bleeding    = bleeding
+        self.reactive    = reactive
 
     def log(self, txt):
         if self.verbose:
@@ -45,7 +46,7 @@ class Bot(commands.Bot):
 
     async def report(self, context, error):
         try:
-            await self.add_reaction(context.message, '\N{THINKING FACE}')
+            await self.doubt(context)
         except discord.errors.NotFound:
             pass
         msg   = 'Error !'
@@ -53,13 +54,26 @@ class Bot(commands.Bot):
         await self.send_message(context.message.channel, msg, embed=embed)
 
     async def ok(self, context):
-        await self.add_reaction(context.message, '\N{OK HAND SIGN}')
+        await self.react(context, '\N{OK HAND SIGN}')
+
+    async def doubt(self, context):
+        await self.react(context, '\N{THINKING FACE}')
+
+    async def sees(self, context):
+        await self.react(context, '\N{EYES}')
+
+    async def replied(self, context):
+        await self.react(context, '\N{RIGHTWARDS ARROW WITH HOOK}')
+
+    async def react(self, context, emoji=None):
+        if emoji is None:
+            return
+        if self.reactive:
+            await self.add_reaction(context.message, emoji)
 
     async def on_ready(self):
         self.log('Logged as {}#{}'.format(self.user.name, self.user.id))
         self.log('My boty is ready')
-
-
 
     @asyncio.coroutine
     def on_message(self, message):

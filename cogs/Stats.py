@@ -25,12 +25,14 @@ class Stats:
     @commands.command(pass_context=True, name='enum', no_pm=True)
     async def _enumerate(self, context, option: str = None):
         ''' Count how many people are on the server. Options : everyone | status | role | game | here '''
-        stats = defaultdict(int)
-        serv  = context.message.server
+        stats  = defaultdict(int)
+        serv   = context.message.server
+        if option != None:
+            option = option.casefold()
         if option in [None, 'everyone']:
             stats['Members'] = len(serv.members)
 
-        if option in ['here', 'present', 'connected']:
+        elif option in ['here', 'present', 'connected']:
             stats['Total']     = 0
             stats['Connected'] = 0
             for member in serv.members:
@@ -40,7 +42,7 @@ class Stats:
                     stats['Connected'] += 1
             stats['Total'] = stats['Connected'] + stats['Offline']
 
-        if option in ['status', 'statuses']:
+        elif option in ['status', 'statuses']:
             stats['Connected'] = 0
             for member in serv.members:
                 stats['Online']         += member.status == discord.Status.online
@@ -52,7 +54,7 @@ class Stats:
             stats['Connected'] = stats['Online'] + stats['Idle'] + stats['Do not disturb']
             stats['Total'] = stats['Connected'] + stats['Offline']
 
-        if option in ['role', 'roles']:
+        elif option in ['role', 'roles']:
             for role in serv.roles:
                 # Sorting roles in server's order
                 stats[role.name] = [0, 0]
@@ -61,16 +63,19 @@ class Stats:
                     stats[role.name][0] += member.status != discord.Status.offline
                     stats[role.name][1] += 1
 
-        if option in ['game', 'games']:
+        elif option in ['game', 'games']:
             for member in serv.members:
                 if member.game != None:
                     stats['Playing']        += 1
                     stats[member.game.name] += 1
 
+        else:
+            return
         msg = '```\n'
         msg += format_keyvalues(stats)
         msg += '```'
         await self.bot.say(msg)
+        await self.bot.replied(context)
 
     @commands.command(pass_context=True, name='whoplays', no_pm=True)
     async def _who_plays(self, context, game:str = None):

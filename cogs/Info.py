@@ -17,11 +17,14 @@ class Info:
         else:
             embed = discord.Embed(description=context.message.channel.topic)
             await self.bot.send_message(context.message.channel, embed=embed)
+            await self.bot.replied(context)
 
     @commands.command(pass_context=True)
     async def info(self, context, what: str = None):
         ''' Gives info about something '''
         embed = discord.Embed()
+        if what != None:
+            what  = what.casefold()
         if what in [None, 'bot']:
             content  = 'I am a bot made and run by `Tina#4153`.\n'
             content += 'Anyone can contribute to my code and add commands !\n'
@@ -75,3 +78,4 @@ class Info:
         else:
             return
         await self.bot.send_message(context.message.channel, embed=embed)
+        await self.bot.replied(context)

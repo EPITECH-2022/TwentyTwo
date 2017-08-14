@@ -36,6 +36,8 @@ class Admin:
     @commands.check(is_admin)
     async def kill(self, context):
         await self.bot.ok(context)
+        if self.bot.reactive:
+            await self.bot.say('\N{WINKING FACE}\N{PISTOL}')
         sys.exit()
 
     @commands.command(pass_context=True, no_pm=True, hidden=True)
@@ -84,7 +86,7 @@ class Admin:
     @commands.command(pass_context=True, hidden=True)
     @commands.check(is_admin)
     async def purge(self, context, limit: int = 100, user: discord.Member = None):
-        check = None
+        is_user  = None
         if user != None:
             def is_user(message):
                 return message.author == user
@@ -94,3 +96,11 @@ class Admin:
             await self.bot.say('Deleted {} messages.'.format(len(deleted)))
         except Exception as e:
             await self.bot.report(context, e)
+
+    @commands.command(pass_context=True, hidden=True)
+    @commands.check(is_admin)
+    async def set(self, context):
+        content = self.bot.get_text(context)
+        words   = content.split()
+        if len(words) > 1:
+            value = words[1].casefold()
