@@ -14,19 +14,18 @@ class Admin:
         await self.bot.send_message(message.channel, msg)
 
     def is_admin(context):
-        user = context.message.author
-        if context.bot.is_owner(user):
+        if context.bot.is_owner(context.message.author):
             return True
 
-        if not hasattr(user, 'server'):
+        if not hasattr(context.message, 'server'):
             return False
 
         admin_roles = []
         for role in context.message.server.roles:
             if role.name in context.bot.admin_roles:
                 admin_roles.append(role)
-        i = len(user.roles) - 1
-        while i >= 0 and user.roles[i] not in admin_roles:
+        i = len(context.message.author.roles) - 1
+        while i >= 0 and context.message.author.roles[i] not in admin_roles:
             i -= 1
         return i != -1
 
@@ -164,34 +163,59 @@ class Admin:
         await self.bot.ok(context)
 
     @commands.command(pass_context=True)
-    async def rank(self, context):
+    async def rank(self, context, role: str = None, user: discord.Member = None):
         words = self.bot.get_text(context).split()
+        # if there is no word in the command text we ignore the command
         if len(words) == 0:
             await self.bot.reply('please specify a rank role to use.')
             await self/bot.doubt(context)
             return
+        # we set the target as the author and default to not an admin
+        target = context.message.author
+        admin  = Admin.is_admin(context)
+        # if there is a second word and it is
+        if len(words) > 1 and user is not None:
+            if not admin:
+                await self.bot.reply('you must be an administrator to set'
+                + 'someone else\'s rank.')
+                await self.doubt(context)
+                return
+            target = user
         value = words[0].casefold()
+        # we build a whitelist based on the sever roles and the bot self whitelist
         server_rank_whitelist = []
         for role in context.message.server.roles:
             if role.name in self.bot.rank_whitelist:
                 server_rank_whitelist.append(role)
-        for role in context.message.author.roles:
+        # to ensure the user has one and only rank we check his ranks
+        # if we found out he already has one and the command was not initiated
+        # by an admin, we return with an error, else we unset the other ranks
+        for role in target.roles:
             if role in server_rank_whitelist:
-                await self.bot.reply('you can not override your own rank role.\n'
-                + 'If you think this is an error, please contact an Admin.')
-                await self.bot.doubt(context)
-                return
+                if not admin:
+                    await self.bot.reply('you can not override your rank roles.\n'
+                    + 'If you think this is an error, please contact an Admin.')
+                    await self.bot.doubt(context)
+                    return
+                try:
+                    await self.bot.remove_roles(target, role)
+                    self.bot.log('Removed role {} from {}'.format(role, target))
+                except discord.errors.Forbidden as e:
+                    await self.bot.report(context, e)
+        # we search the whitelist for a role which's name = the command option
         i = len(server_rank_whitelist) - 1
         while i >= 0 and server_rank_whitelist[i].name.casefold() != value:
             i -= 1
+        # no matching role found, we tell the user his option is not whitelisted
         if i < 0:
             await self.bot.reply('the rank role you specified is not'
             + ' whitelisted on this server.\n'
             + 'If you think this is an error, please contact an Admin.')
             await self.bot.doubt(context)
             return
+        # else we try to add the roles and catch for Discord Forbidden error
         try:
-            await self.bot.add_roles(context.message.author, server_rank_whitelist[i])
+            await self.bot.add_roles(target, server_rank_whitelist[i])
             await self.bot.ok(context)
         except discord.errors.Forbidden as e:
             await self.bot.report(context, e)
