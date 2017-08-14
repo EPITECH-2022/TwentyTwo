@@ -150,7 +150,7 @@ class Admin:
 
     @commands.command(pass_context=True, hidden=True)
     @commands.check(is_admin)
-    async def playing(self, context)
+    async def playing(self, context):
         content = self.bot.get_text(context)
         game = discord.Game(name=content)
         await self.bot.change_presence(game)
