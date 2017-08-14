@@ -1,6 +1,3 @@
-from unidecode   import unidecode
-from datetime    import datetime
-
 import discord
 from discord.ext import commands
 
@@ -24,6 +21,7 @@ class Fun:
     @commands.command(pass_context=True)
     async def age(self, context, member: discord.Member = None):
         ''' Tells the age of a Discord account '''
+        from datetime    import datetime
         if member is None:
             member = context.message.author
         msg = '`{}` joined Discord on {}'
@@ -33,6 +31,7 @@ class Fun:
     @commands.command(pass_context=True)
     async def joined(self, context, member: discord.Member = None):
         ''' Tells the age of a member on this Discord account '''
+        from datetime    import datetime
         if member is None:
             member = context.message.author
         msg = '`{}` joined *{}* on {}'
@@ -48,6 +47,7 @@ class Fun:
     @commands.command(pass_context=True, aliases=['ri', 'riz', 'regional_indicator'])
     async def emoji(self, context):
         ''' Sends a text and replace letters with regional indicators '''
+        from unidecode   import unidecode
         content = self.bot.get_text(context)
         if content in [None, '', ' '] or context.invoked_with == 'riz' and not self.bot.is_owner(context.message.author):
             return
@@ -70,6 +70,7 @@ class Fun:
     @commands.command(pass_context=True)
     async def decode(self, context):
         ''' Convert any character to its ASCII counterpart '''
+        from unidecode   import unidecode
         content = self.bot.get_text(context)
         if content in [None, ' ']:
             await self.bot.doubt(context)

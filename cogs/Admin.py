@@ -1,5 +1,3 @@
-import sys
-
 import discord
 from discord.ext import commands
 
@@ -35,6 +33,7 @@ class Admin:
     @commands.command(pass_context=True, hidden=True)
     @commands.check(is_admin)
     async def kill(self, context):
+        import sys
         await self.bot.ok(context)
         if self.bot.reactive:
             await self.bot.say('\N{WINKING FACE}\N{PISTOL}')

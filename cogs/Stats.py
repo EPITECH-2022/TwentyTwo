@@ -1,5 +1,3 @@
-from collections import defaultdict
-
 import discord
 from discord.ext import commands
 
@@ -22,9 +20,10 @@ class Stats:
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command(pass_context=True, name='enum', no_pm=True)
+    @commands.command(pass_context=True, name='enum', aliases=['enumerate'] no_pm=True)
     async def _enumerate(self, context, option: str = None):
         ''' Count how many people are on the server. Options : everyone | status | role | game | here '''
+        from collections import defaultdict
         stats  = defaultdict(int)
         serv   = context.message.server
         if option != None:
