@@ -147,3 +147,11 @@ class Admin:
             return
         await self.bot.say('Value of {} : {}'.format(flag, self.bot.config[flag]))
         await self.bot.replied(context)
+
+    @commands.command(pass_context=True, hidden=True)
+    @commands.check(is_admin)
+    async def playing(self, context)
+        content = self.bot.get_text(context)
+        game = discord.Game(name=content)
+        await self.bot.change_presence(game)
+        await self.bot.ok(context)
