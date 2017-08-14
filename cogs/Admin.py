@@ -57,6 +57,13 @@ class Admin:
     @commands.command(pass_context=True, hidden=True)
     @commands.check(is_admin)
     async def edit(self, context, field: str = None, value: str = None):
+        '''
+        Edit the bot account
+
+        Usage   : edit [field] [value]
+        Fields  : username
+        Values  : "string"
+        '''
         if field is None or value is None:
             await self.bot.reply('Please set a field/value.')
             await self.bot.doubt(context)
@@ -99,9 +106,9 @@ class Admin:
         except Exception as e:
             await self.bot.report(context, e)
 
-    @commands.command(pass_context=True, hidden=True)
+    @commands.command(name='set', pass_context=True, hidden=True)
     @commands.check(is_admin)
-    async def set(self, context):
+    async def _set(self, context):
         content = self.bot.get_text(context)
         words   = content.split()
         length  = len(words)

@@ -22,7 +22,14 @@ class Stats:
 
     @commands.command(pass_context=True, name='enum', aliases=['enumerate'], no_pm=True)
     async def _enumerate(self, context, option: str = None):
-        ''' Count how many people are on the server. Options : everyone | status | role | game | here '''
+        '''
+        Count how many people are on the server.
+
+        Count how many people are on the server or sort them by different predicates.
+
+        Usage   : enum [[option]]
+        Options : [everyone | status | role | game | here]
+        '''
         from collections import defaultdict
         stats  = defaultdict(int)
         serv   = context.message.server
@@ -80,7 +87,14 @@ class Stats:
 
     @commands.command(pass_context=True, name='whoplays', no_pm=True)
     async def _who_plays(self, context, game:str = None):
-        ''' Tells who play a given game. (partial matching) '''
+        '''
+        Tells who play a given game. (partial matching)
+
+        Case insensitive, ignoring unicode matching.
+        i.e.: "bibi" can match "Âbabîbîbou"
+
+        Usage : whoplays [text]
+        '''
         if game is None:
             await self.bot.reply('Please input a game name.')
             return

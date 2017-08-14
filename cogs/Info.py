@@ -10,7 +10,9 @@ class Info:
 
     @commands.command(pass_context=True, no_pm=True)
     async def topic(self, context):
-        ''' Tells the channel's topic '''
+        '''
+        Tells the channel's topic
+        '''
         topic = context.message.channel.topic
         if topic in [None, '', ' ']:
             await self.bot.reply('there is no topic set here.')
@@ -21,7 +23,12 @@ class Info:
 
     @commands.command(pass_context=True)
     async def info(self, context, what: str = None):
-        ''' Gives info about something '''
+        '''
+        Gives info about something
+
+        Usage   : info [[topic]]
+        Options : topic = bot | commands | github | antilag
+        '''
         embed = discord.Embed()
         if what != None:
             what  = what.casefold()
@@ -36,17 +43,23 @@ class Info:
             header  = 'Commands are prefixed by a mention to `{}` or a `!`'.format(self.bot.user)
             admin   = '- kill\n'
             admin  += '- ban [@user] [["reason"]] [[delete message (days)]]\n'
-            admin  += '- edit ["field"] ["value"] (edit the bot account)'
+            admin  += '- edit ["field"] ["value"] (edit the bot account)\n'
+            admin  += '- clean [[limit=100]] (removes bot messages)\n'
+            admin  += '- purge [[limit=100]] [[@user]]\n'
+            admin  += '- set [config flag] [[value]]\n'
+            admin  += '- check [config flag]\n'
+            admin  += '- playing [text] (edit bot status)'
             fun     = '- hello, - hi, - help\n'
             fun    += '- age [[@user]], - joined [[@user]]\n'
             fun    += '- emoji | ri ["text to convert to emoji"]\n'
             fun    += '- decode ["text"]\n'
             fun    += '- trad ["language (2 characters)"] ["text"]\n'
-            fun    += '- pronunciation | pron ["text"]'
+            fun    += '- pronunciation | pron ["text"]\n'
+            fun    += '- wiki [text]'
             stats   = '- enum [[everyone | status | role | game | here]]\n'
             stats  += '- whoplays ["partial matching text"]'
             info    = '- topic\n'
-            info   += '- info [bot | command | github | lag]'
+            info   += '- info [bot | commands | github | antilag]'
             embed.add_field(name='Usage', value=header)
             embed.add_field(name='Admin', value=admin)
             embed.add_field(name='Fun',   value=fun)
@@ -60,7 +73,7 @@ class Info:
             embed.add_field(name='GitHub', value=github)
             embed.add_field(name='Git',    value=git)
             embed.add_field(name='Check this bot on GitHub', value=link)
-        elif what in ['lag', 'lagging', '3g', '3G', 'h+', 'H+', 'doublon', 'anti-lag', 'antilag']:
+        elif what in ['lag', 'lagging', '3g', 'h+', 'doublon', 'anti-lag', 'antilag']:
             lagging   = 'Discord has no native anti lag. That means when someone'
             lagging  += ' is on a slow connection, there is a potential risk that'
             lagging  += ' the message he is trying to send will be sent multiple'
