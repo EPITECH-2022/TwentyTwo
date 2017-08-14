@@ -38,9 +38,22 @@ class Bot(commands.Bot):
         self.config      = {
             'verbose'  : verbose,
             'bleeding' : bleeding,
-            'reactive' : reactive
-        }
+            'reactive' : reactive,
 
+            'rank_whitelist_file': 'rank_whitelist.txt'
+        }
+        self.rank_whitelist = []
+
+
+        try:
+            with open(self.config['rank_whitelist_file']) as f:
+                for line in f:
+                    self.rank_whitelist.append(line.rstrip('\n'))
+        except FileNotFoundError as e:
+            self.log('File {} does not exist.\n'
+                .format(self.config['rank_whitelist_file'])
+                + 'Create and maintain one if you wish to use the rank'
+                + ' whitelist feature.')
 
     def log(self, txt):
         if self.config['verbose']:
@@ -53,10 +66,7 @@ class Bot(commands.Bot):
         return context.message.content[(len(context.prefix + context.invoked_with)) + 1:]
 
     async def report(self, context, error):
-        try:
-            await self.doubt(context)
-        except discord.errors.NotFound:
-            pass
+        await self.doubt(context)
         msg   = 'Error !'
         embed = discord.Embed(description=str(error), colour=discord.Colour.orange())
         await self.send_message(context.message.channel, msg, embed=embed)
@@ -77,7 +87,14 @@ class Bot(commands.Bot):
         if emoji is None:
             return
         if self.config['reactive']:
-            await self.add_reaction(context.message, emoji)
+            try:
+                await self.add_reaction(context.message, emoji)
+            except discord.errors.NotFound:
+                pass
+
+    async def shrug(self, context):
+        if self.config['reactive']:
+            await self.send_message(context.message.channel, '¯\_(ツ)_/¯')
 
     async def on_ready(self):
         self.log('Logged as {}#{}'.format(self.user.name, self.user.id))

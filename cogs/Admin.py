@@ -162,3 +162,54 @@ class Admin:
         game = discord.Game(name=content)
         await self.bot.change_presence(game=game)
         await self.bot.ok(context)
+
+    @commands.command(pass_context=True)
+    async def rank(self, context):
+        words = self.bot.get_text(context).split()
+        if len(words) == 0:
+            await self.bot.reply('please specify a rank role to use.')
+            await self/bot.doubt(context)
+            return
+        value = words[0].casefold()
+        server_rank_whitelist = []
+        for role in context.message.server.roles:
+            if role.name in self.bot.rank_whitelist:
+                server_rank_whitelist.append(role)
+        for role in context.message.author.roles:
+            if role in server_rank_whitelist:
+                await self.bot.reply('you can not override your own rank role.\n'
+                + 'If you think this is an error, please contact an Admin.')
+                await self.bot.doubt(context)
+                return
+        i = len(server_rank_whitelist) - 1
+        while i >= 0 and server_rank_whitelist[i].name.casefold() != value:
+            i -= 1
+        if i < 0:
+            await self.bot.reply('the rank role you specified is not'
+            + ' whitelisted on this server.\n'
+            + 'If you think this is an error, please contact an Admin.')
+            await self.bot.doubt(context)
+            return
+        try:
+            await self.bot.add_roles(context.message.author, server_rank_whitelist[i])
+            await self.bot.ok(context)
+        except discord.errors.Forbidden as e:
+            await self.bot.report(context, e)
+
+    @commands.command(pass_context=True)
+    async def ranks(self, context):
+        server_rank_whitelist = []
+        for role in context.message.server.roles:
+            if role.name in self.bot.rank_whitelist:
+                server_rank_whitelist.append(role)
+        if len(server_rank_whitelist) == 0:
+            await self.bot.reply('there are no rank roles on this server.')
+            await self.bot.shrug(context)
+        msg  = 'This is a list of the roles that counts as "rank role" on this server.\n'
+        msg += 'What we call a "rank role" is a Discord role that is used as a'
+        msg += ' rank. Meaning you can only have one role from the ranks list.\n'
+        msg += '```\n'
+        for role in server_rank_whitelist:
+            msg += '{0.name}\n'.format(role)
+        msg += '```'
+        await self.bot.say(msg)
