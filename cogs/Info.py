@@ -41,7 +41,7 @@ class Info:
             embed.add_field(name='GitHub',      value=url)
         elif what in ['command', 'commands']:
             header  = 'Commands are prefixed by a mention to `{}` or a `!`'.format(self.bot.user)
-            admin   = '- kill\n'
+            admin   = '- kill (terminates / restarts the bot)\n'
             admin  += '- ban [@user] [["reason"]] [[delete message (days)]]\n'
             admin  += '- edit ["field"] ["value"] (edit the bot account)\n'
             admin  += '- clean [[limit=100]] (removes bot messages)\n'
