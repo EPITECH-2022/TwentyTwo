@@ -138,8 +138,8 @@ class Fun:
                 try:
                     if len(page.images) > 0:
                         embed.set_image(url=page.images[0])
-                    except KeyError:
-                        pass
+                except KeyError:
+                    pass
             await self.bot.say(embed=embed)
             await self.bot.replied(context)
         except wikipedia.DisambiguationError as e:
