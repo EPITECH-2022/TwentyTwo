@@ -6,5 +6,7 @@ Highly recommended :
 
 # Dependencies
 - discord.py
+## Dependencies (Fun commands)
 - unidecode
 - googletrans
+- wikipedia
