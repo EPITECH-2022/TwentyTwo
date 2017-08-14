@@ -60,6 +60,7 @@ class Admin:
     async def edit(self, context, field: str = None, value: str = None):
         if field is None or value is None:
             await self.bot.reply('Please set a field/value.')
+            await self.bot.doubt(context)
             return
         username = None
         #TODO avatar   = None
@@ -80,6 +81,7 @@ class Admin:
             message = context.message
             deleted = await self.bot.purge_from(message.channel, limit=limit, check=predicate)
             await self.bot.say('Deleted {} messages.'.format(len(deleted)))
+            await self.bot.ok(context)
         except Exception as e:
             await self.bot.report(context, e)
 
@@ -94,6 +96,7 @@ class Admin:
             message = context.message
             deleted = await self.bot.purge_from(message.channel, limit=limit, check=is_user)
             await self.bot.say('Deleted {} messages.'.format(len(deleted)))
+            await self.bot.ok(context)
         except Exception as e:
             await self.bot.report(context, e)
 
@@ -102,5 +105,46 @@ class Admin:
     async def set(self, context):
         content = self.bot.get_text(context)
         words   = content.split()
+        length  = len(words)
+        if length == 0:
+            await self.bot.reply('please input a flag to set.')
+            await self.bot.doubt(context)
+        flag    = words[0]
+        if flag not in self.bot.config.keys():
+            await self.bot.reply('please input a valid flag. Possible values:\n'
+                            + 'verbose | bleeding | reactive')
+            await self.bot.doubt(context)
+            return
         if len(words) > 1:
             value = words[1].casefold()
+            if  value == 'true':
+                def switch(value):
+                    return True
+            elif value == 'false':
+                def switch(value):
+                    return False
+            else:
+                def switch(value):
+                    return not value
+        else:
+            def switch(value):
+                return not value
+        self.bot.config[flag] = switch(self.bot.config[flag])
+        await self.bot.say('Set flag {} to {}'.format(flag, self.bot.config[flag]))
+        await self.bot.ok(context)
+
+    @commands.command(name='check', pass_context=True, hidden=True)
+    @commands.check(is_admin)
+    async def _check(self, context):
+        content = self.bot.get_text(context)
+        words   = content.split()
+        if len(words) == 0:
+            self.bot.reply('please input a flag to set.')
+            self.bot.doubt(context)
+        flag    = words[0]
+        if flag not in self.bot.config.keys():
+            await self.bot.reply('please input a valid flag. Possible values:\n'
+                            + 'verbose | bleeding | reactive')
+            return
+        await self.bot.say('Value of {} : {}'.format(flag, self.bot.config[flag]))
+        await self.bot.replied(context)

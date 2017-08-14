@@ -10,7 +10,12 @@ from Verifier import Verifier
 def main():
 
     # define bot
-    bot = Bot(description=config.description, verbose=config.verbose, bleeding=config.bleeding)
+    bot = Bot(
+        description=config.description,
+        verbose=config.verbose,
+        bleeding=config.bleeding,
+        reactive=config.reactive
+    )
     bot.add_cog(cogs.Fun  (bot))
     bot.add_cog(cogs.Stats(bot))
     bot.add_cog(cogs.Info (bot))
@@ -30,12 +35,15 @@ class Bot(commands.Bot):
 
         self.admins      = []
         self.admin_roles = ['Administrateur']
-        self.verbose     = verbose
-        self.bleeding    = bleeding
-        self.reactive    = reactive
+        self.config      = {
+            'verbose'  : verbose,
+            'bleeding' : bleeding,
+            'reactive' : reactive
+        }
+
 
     def log(self, txt):
-        if self.verbose:
+        if self.config['verbose']:
             print(txt)
 
     def is_owner(self, user):
@@ -68,7 +76,7 @@ class Bot(commands.Bot):
     async def react(self, context, emoji=None):
         if emoji is None:
             return
-        if self.reactive:
+        if self.config['reactive']:
             await self.add_reaction(context.message, emoji)
 
     async def on_ready(self):
@@ -78,6 +86,9 @@ class Bot(commands.Bot):
     @asyncio.coroutine
     def on_message(self, message):
             def anti_lag(message2):
+                # if bot = not a lag (bots do not lag, they are superior entities)
+                if message.author.bot:
+                    return False
                 # same id = not a lag
                 if message.id == message2.id:
                     return False
@@ -88,15 +99,14 @@ class Bot(commands.Bot):
                 if message.timestamp - message2.timestamp > datetime.timedelta(0, 120):
                     return False
                 # same content = a lag, not same content = not a lag
-                if message.content == message2.content:
-                    return message.embeds == message2.embeds
+                return message.content == message2.content
             # call purge check anti_lag on every message
             yield from self.purge_from(message.channel, limit=10, check=anti_lag)
             # process commands
             yield from self.process_commands(message)
 
     async def on_member_join(self, member):
-        if self.bleeding:
+        if self.config['bleeding']:
             self.log('Initiating verification procedure for user "{}".'.format(member.name))
             msg  = 'Please send !register followed by your EPITECH mail adress\n'
             msg += 'i.e.: ```!register yournam_e@epitech.eu```\n'

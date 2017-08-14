@@ -36,21 +36,23 @@ class Stats:
             stats['Total']     = 0
             stats['Connected'] = 0
             for member in serv.members:
-                if member.status == discord.Status.offline:
-                    stats['Offline'] += 1
-                else:
-                    stats['Connected'] += 1
+                if not member.bot:
+                    if member.status == discord.Status.offline:
+                        stats['Offline'] += 1
+                    else:
+                        stats['Connected'] += 1
             stats['Total'] = stats['Connected'] + stats['Offline']
 
         elif option in ['status', 'statuses']:
             stats['Connected'] = 0
             for member in serv.members:
-                stats['Online']         += member.status == discord.Status.online
-                stats['Idle']           += member.status == discord.Status.idle
-                stats['Do not disturb'] += member.status == discord.Status.dnd
-                stats['Playing']        += member.game != None
-                stats['Streaming']      += member.game !=None and member.game.type == 1
-                stats['Offline']        += member.status == discord.Status.offline
+                if not member.bot:
+                    stats['Online']         += member.status == discord.Status.online
+                    stats['Idle']           += member.status == discord.Status.idle
+                    stats['Do not disturb'] += member.status == discord.Status.dnd
+                    stats['Playing']        += member.game != None
+                    stats['Streaming']      += member.game !=None and member.game.type == 1
+                    stats['Offline']        += member.status == discord.Status.offline
             stats['Connected'] = stats['Online'] + stats['Idle'] + stats['Do not disturb']
             stats['Total'] = stats['Connected'] + stats['Offline']
 
@@ -65,7 +67,7 @@ class Stats:
 
         elif option in ['game', 'games']:
             for member in serv.members:
-                if member.game != None:
+                if member.game != None and not member.bot:
                     stats['Playing']        += 1
                     stats[member.game.name] += 1
 
@@ -95,3 +97,4 @@ class Stats:
             msg += '- {} ({})\n'.format(member, member.game)
         msg += '```'
         await self.bot.say(msg)
+        await self.bot.replied(context)

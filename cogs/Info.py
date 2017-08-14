@@ -52,7 +52,7 @@ class Info:
             embed.add_field(name='Fun',   value=fun)
             embed.add_field(name='Stats', value=stats)
             embed.add_field(name='Info',  value=info)
-        elif what in ['github', 'Github', 'GitHub']:
+        elif what in ['git', 'github', 'Github', 'GitHub']:
             github  = 'GitHub is an online GUI and augmentation for using Git.\n'
             github += 'You can use GitHub to read the code, send pull requests...'
             git     = 'Git is an old (but still maintained) free versioning software.'
