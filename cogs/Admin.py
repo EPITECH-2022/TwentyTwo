@@ -153,5 +153,5 @@ class Admin:
     async def playing(self, context):
         content = self.bot.get_text(context)
         game = discord.Game(name=content)
-        await self.bot.change_presence(game)
+        await self.bot.change_presence(game=game)
         await self.bot.ok(context)
