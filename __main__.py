@@ -33,34 +33,36 @@ class Bot(commands.Bot):
         # Rewrite the command_prefix flag to force mention
         super().__init__(*args, command_prefix=commands.when_mentioned_or('!'), **kwargs)
 
-        self.admins      = []
-        self.admin_roles = ['Administrateur']
         self.config      = {
             'verbose'  : verbose,
             'bleeding' : bleeding,
             'reactive' : reactive,
 
-            'rank_whitelist_file': 'rank_whitelist.txt'
+            'rank_whitelist_file': 'rank_whitelist.txt',
+            'admin_roles_file'   : 'rank_whitelist.txt',
+            'power_admins_file'  : 'power_admins.txt'
         }
-        self.rank_whitelist = []
+        self.rank_whitelist = self.load(self.config['rank_whitelist_file'])
+        self.admin_roles    = self.load(self.config['admin_roles_file'])
+        self.power_admins   = self.load(self.config['power_admins_file'])
 
-
+    def load(self, path):
+        r = []
         try:
-            with open(self.config['rank_whitelist_file']) as f:
+            with open(path) as f:
                 for line in f:
-                    self.rank_whitelist.append(line.rstrip('\n'))
+                    r.append(line.rstrip('\n'))
         except FileNotFoundError as e:
-            self.log('File {} does not exist.\n'
-                .format(self.config['rank_whitelist_file'])
-                + 'Create and maintain one if you wish to use the rank'
-                + ' whitelist feature.')
+            self.log('Warning.\n'
+            + 'Failed to load file {} : file does not exist.\n'.format(path))
+        return r
 
     def log(self, txt):
         if self.config['verbose']:
             print(txt)
 
     def is_owner(self, user):
-        return user.name + '#' + str(user.discriminator) == 'Tina#4153'
+        return user.name + '#' + str(user.discriminator) in self.power_admins
 
     def get_text(self, context):
         return context.message.content[(len(context.prefix + context.invoked_with)) + 1:]

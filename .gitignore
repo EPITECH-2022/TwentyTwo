@@ -1,3 +1,5 @@
-__pycache__/
 /rank_whitelist.txt
+/admin_roles.txt
+/power_admins.txt
+__pycache__/
 *.swp
