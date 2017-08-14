@@ -35,7 +35,7 @@ class Admin:
     async def kill(self, context):
         import sys
         await self.bot.ok(context)
-        if self.bot.reactive:
+        if self.bot.config['reactive']:
             await self.bot.say('\N{WINKING FACE}\N{PISTOL}')
         sys.exit()
 
