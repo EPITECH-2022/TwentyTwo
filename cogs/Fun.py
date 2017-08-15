@@ -124,24 +124,36 @@ class Fun:
             await self.bot.report(context, e)
 
     @commands.command(pass_context=True, aliases=['wiki'])
-    async def wikipedia(self, context):
+    async def wikipedia(self, context, lang: str = None):
         ''' Get a page from wikipedia and reply with an embed '''
         query = self.bot.get_text(context)
+        if lang is not None:
+            if lang.startswith('(') and lang.endswith(')'):
+                query = query[len(lang) + 1:]
+                lang = lang[1:-1]
+            else:
+                lang = None
         if query in [None, '', ' ']:
             await self.bot.doubt(context)
             return
         try:
             import wikipedia
+            if lang is not None and lang in wikipedia.languages().keys():
+                wikipedia.set_lang(lang)
             page    = wikipedia.page(query)
             embed   = discord.Embed(title=page.title, description=page.summary, url=page.url)
             if self.bot.config['bleeding']:
-                try:
-                    if len(page.images) > 0:
-                        embed.set_image(url=page.images[0])
-                except KeyError:
-                    pass
+                if len(page.images) > 0:
+                    embed.set_image(url=page.images[0])
             await self.bot.say(embed=embed)
             await self.bot.replied(context)
+            if lang is not None:
+                wikipedia.set_lang('en')
+        except wikipedia.PageError as e:
+            await self.bot.reply('{}\nMake sure you search for page titles in the language that you have set.'.format(e))
+            await self.bot.doubt(context)
+        except KeyError:
+            pass
         except wikipedia.DisambiguationError as e:
             msg = '```\n{}\n```'.format(e)
             await self.bot.doubt(context)
