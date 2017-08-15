@@ -87,6 +87,8 @@ class Admin:
             deleted = await self.bot.purge_from(message.channel, limit=limit, check=predicate)
             await self.bot.say('Deleted {} messages.'.format(len(deleted)))
             await self.bot.ok(context)
+        except discord.errors.NotFound:
+            pass
         except Exception as e:
             await self.bot.report(context, e)
 
@@ -102,6 +104,8 @@ class Admin:
             deleted = await self.bot.purge_from(message.channel, limit=limit, check=is_user)
             await self.bot.say('Deleted {} messages.'.format(len(deleted)))
             await self.bot.ok(context)
+        except discord.errors.NotFound:
+            pass
         except Exception as e:
             await self.bot.report(context, e)
 
@@ -168,7 +172,7 @@ class Admin:
         # if there is no word in the command text we ignore the command
         if len(words) == 0:
             await self.bot.reply('please specify a rank role to use.')
-            await self/bot.doubt(context)
+            await self.bot.doubt(context)
             return
         # we set the target as the author and default to not an admin
         target = context.message.author
@@ -237,3 +241,34 @@ class Admin:
             msg += '{0.name}\n'.format(role)
         msg += '```'
         await self.bot.say(msg)
+
+    @commands.command(pass_context=True)
+    @commands.check(is_admin)
+    async def erase(self, context, limit: int = 100, user: discord.Member = None):
+        if user is None:
+            await self.bot.reply('please specify an user.')
+            await self.bot.say('Usage: erase [limit] [@user]')
+            await self.bot.doubt(context)
+            return
+        def is_user(message):
+            return message.author == user
+        try:
+            deleted = 0
+            for channel in context.message.server.channels:
+                try:
+                    deleted_now = await self.bot.purge_from(channel, limit=limit, check=is_user)
+                    deleted += len(deleted_now)
+                except discord.errors.HTTPException as e:
+                    # if we encounter a message that is > 14 days old we can not purge it
+                    # (error code 50034)
+                    # we simply skip this channel
+                    if e.code == 50034:
+                        pass
+                    else:
+                        raise e
+            await self.bot.say('Deleted {} messages.'.format(deleted))
+            await self.bot.ok(context)
+        except discord.errors.NotFound:
+            pass
+        except discord.errors.Forbidden as e:
+            await self.bot.report(context, e)
