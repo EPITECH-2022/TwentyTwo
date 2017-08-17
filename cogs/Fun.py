@@ -143,8 +143,11 @@ class Fun:
             else:
                 wikipedia.set_lang('en')
             page    = wikipedia.page(query)
-            embed   = discord.Embed(title=str(page.title), description=str(page.summary))
-            embed.set_footer(text=str(page.url))
+            summary = page.summary
+            if len(summary) > 1222: # totally arbitrary chosen number
+                summary = summary[:1220] + '...'
+            embed   = discord.Embed(title=page.title, description=summary)
+            embed.set_footer(text=page.url)
             if self.bot.config['bleeding']:
                 if len(page.images) > 0:
                     embed.set_image(url=page.images[0])
