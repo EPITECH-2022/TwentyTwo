@@ -19,6 +19,7 @@ def main():
     bot.add_cog(cogs.Fun  (bot))
     bot.add_cog(cogs.Stats(bot))
     bot.add_cog(cogs.Info (bot))
+    bot.add_cog(cogs.Music(bot))
     bot.add_cog(cogs.Admin(bot))
 
     # launch bot
