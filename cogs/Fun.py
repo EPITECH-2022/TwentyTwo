@@ -146,7 +146,7 @@ class Fun:
             summary = page.summary
             if len(summary) > 1222: # totally arbitrary chosen number
                 summary = summary[:1220] + '...'
-            embed   = discord.Embed(title=page.title, description=summary)
+            embed   = discord.Embed(title=page.title, description=summary, url=page.url)
             embed.set_footer(text=page.url)
             if self.bot.config['bleeding']:
                 if len(page.images) > 0:
