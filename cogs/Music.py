@@ -219,7 +219,7 @@ class Music:
         else:
             await self.bot.say('You have already voted to skip this song.')
 
-    @commands.command(pass_context=True, no_pm=True)
+    @commands.command(name='np', aliases=['nowplaying'], pass_context=True, no_pm=True)
     async def playing(self, context):
         """Shows info about the currently played song."""
 
