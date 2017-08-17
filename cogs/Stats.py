@@ -77,6 +77,15 @@ class Stats:
                     stats['Playing']        += 1
                     stats[member.game.name] += 1
 
+        elif option in ['rank', 'ranks', 'campus']:
+            for role in serv.roles:
+                if role.name in self.bot.rank_whitelist:
+                    stats[role.name] = 0
+            for member in serv.members:
+                for role in member.roles:
+                    if role.name in self.bot.rank_whitelist:
+                        stats[role.name] += 1
+
         else:
             return
         msg = '```\n'
