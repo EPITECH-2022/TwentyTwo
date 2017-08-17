@@ -126,7 +126,7 @@ class Music:
         state = self.get_voice_state(context.message.server)
         opts = {
             'default_search': 'auto',
-            'quiet': True,
+            'verbose': True,
         }
 
         if state.voice is None:
