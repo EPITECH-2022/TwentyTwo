@@ -242,7 +242,7 @@ class Admin:
         msg += '```'
         await self.bot.say(msg)
 
-    @commands.command(pass_context=True)
+    @commands.command(pass_context=True, hidden=True)
     @commands.check(is_admin)
     async def erase(self, context, limit: int = 100, user: discord.Member = None):
         if user is None:
