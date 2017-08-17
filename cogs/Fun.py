@@ -143,16 +143,12 @@ class Fun:
             else:
                 wikipedia.set_lang('en')
             page    = wikipedia.page(query)
-            embed   = discord.Embed(title=page.title, description=page.summary)
-            # embed.set_footer(text=page.url)
+            embed   = discord.Embed(title=str(page.title), description=str(page.summary))
+            embed.set_footer(text=str(page.url))
             if self.bot.config['bleeding']:
                 if len(page.images) > 0:
                     embed.set_image(url=page.images[0])
-            try:
-                await self.bot.say(embed=embed)
-            except discord.errors.HTTPException:
-                msg = '**{}**\n{}\n\n{}'.format(page.title, page.summary, page.url)
-                await self.bot.say(msg)
+            await self.bot.say(embed=embed)
             await self.bot.replied(context)
         except wikipedia.PageError as e:
             await self.bot.reply('{}\nMake sure you search for page titles in the language that you have set.'.format(e))
