@@ -141,7 +141,8 @@ class Fun:
             if lang is not None and lang in wikipedia.languages().keys():
                 wikipedia.set_lang(lang)
             page    = wikipedia.page(query)
-            embed   = discord.Embed(title=page.title, description=page.summary, url=page.url)
+            embed   = discord.Embed(title=page.title, description=page.summary)
+            embed.set_footer(text=page.url)
             if self.bot.config['bleeding']:
                 if len(page.images) > 0:
                     embed.set_image(url=page.images[0])
