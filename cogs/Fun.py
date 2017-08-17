@@ -124,7 +124,7 @@ class Fun:
             await self.bot.report(context, e)
 
     @commands.command(pass_context=True, aliases=['wiki'])
-    async def wikipedia(self, context, lang: str = None):
+    async def wikipedia(self, context, lang: str = None, query: str = None):
         ''' Get a page from wikipedia and reply with an embed '''
         query = self.bot.get_text(context)
         if lang is not None:
@@ -140,16 +140,20 @@ class Fun:
             import wikipedia
             if lang is not None and lang in wikipedia.languages().keys():
                 wikipedia.set_lang(lang)
+            else:
+                wikipedia.set_lang('en')
             page    = wikipedia.page(query)
             embed   = discord.Embed(title=page.title, description=page.summary)
             # embed.set_footer(text=page.url)
             if self.bot.config['bleeding']:
                 if len(page.images) > 0:
                     embed.set_image(url=page.images[0])
-            await self.bot.say(embed=embed)
+            try:
+                await self.bot.say(embed=embed)
+            except discord.errors.HTTPException:
+                msg = '**{}**\n{}\n\n{}'.format(page.title, page.summary, page.url)
+                await self.bot.say(msg)
             await self.bot.replied(context)
-            if lang is not None:
-                wikipedia.set_lang('en')
         except wikipedia.PageError as e:
             await self.bot.reply('{}\nMake sure you search for page titles in the language that you have set.'.format(e))
             await self.bot.doubt(context)
