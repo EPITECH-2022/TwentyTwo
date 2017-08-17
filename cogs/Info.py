@@ -83,7 +83,7 @@ class Info:
             anti_lag += ' specific predicate on the 10 previous messages. Here is'
             anti_lag += ' the specs :\n'
             anti_lag += '- Message has the same content and\n'
-            anti_lag += '- Message has less than 2 minutes difference and\n'
+            anti_lag += '- Message has less than 20 seconds difference and\n'
             anti_lag += '- Message has been posted by the same user and\n'
             anti_lag += '- Message has not the same unique ID.'
             embed.add_field(name='Lagging',  value=lagging)

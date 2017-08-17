@@ -115,7 +115,7 @@ class Bot(commands.Bot):
                 if message.author != message2.author:
                     return False
                 # more than 2 minutes delta = not a lag
-                if message.timestamp - message2.timestamp > datetime.timedelta(0, 120):
+                if message.timestamp - message2.timestamp > datetime.timedelta(0, 20):
                     return False
                 # same content = a lag, not same content = not a lag
                 return message.content == message2.content
