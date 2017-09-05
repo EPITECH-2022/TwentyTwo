@@ -108,6 +108,10 @@ class Bot(commands.Bot):
                 # if bot = not a lag (bots do not lag, they are superior entities)
                 if message.author.bot:
                     return False
+                if len(message.embeds) > 0:
+                    return False
+                if len(message.attachments) > 0:
+                    return False
                 # same id = not a lag
                 if message.id == message2.id:
                     return False
