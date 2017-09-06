@@ -128,10 +128,9 @@ class Bot(commands.Bot):
                 content = message.content.casefold()
                 if len(content) <= 2:
                     return 'pd' in content
-                else:
-                    if content[-2:] == 'pd' or content[:2] == 'pd':
-                        return True
-                    return ' pd ' in content
+                if content[-2:] == 'pd' or content[:2] == 'pd':
+                    return True
+                return ' pd ' in content
 
             if self.config['reactive']:
                 if is_pd(message):
