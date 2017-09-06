@@ -108,8 +108,10 @@ class Bot(commands.Bot):
                 # if bot = not a lag (bots do not lag, they are superior entities)
                 if message.author.bot:
                     return False
+                # we ignore messages with embeds
                 if len(message.embeds) > 0:
                     return False
+                # we ignore messages with attachments
                 if len(message.attachments) > 0:
                     return False
                 # same id = not a lag
@@ -126,6 +128,9 @@ class Bot(commands.Bot):
 
             def is_pd(message):
                 content = message.content.casefold()
+                remove_chars = ['\'', '"', '(', ')', ',', ';', '*', '`']
+                for char in remove_chars:
+                    content = content.strip(char)
                 if len(content) == 2:
                     return 'pd' == content
                 if content[-3:] == ' pd' or content[:3] == 'pd ':
