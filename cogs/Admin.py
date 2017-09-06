@@ -118,15 +118,15 @@ class Admin:
         if length == 0:
             await self.bot.reply('please input a flag to set.')
             await self.bot.doubt(context)
-        flag    = words[0]
+        flag = words[0]
         if flag not in self.bot.config.keys():
             await self.bot.reply('please input a valid flag. Possible values:\n'
-                            + 'verbose | bleeding | reactive')
+                               + 'verbose | bleeding | reactive')
             await self.bot.doubt(context)
             return
         if len(words) > 1:
             value = words[1].casefold()
-            if  value == 'true':
+            if   value == 'true':
                 def switch(value):
                     return True
             elif value == 'false':
