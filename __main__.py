@@ -126,7 +126,7 @@ class Bot(commands.Bot):
 
             def is_pd(message):
                 content = message.content.casefold()
-                if len(content) < 2:
+                if len(content) == 2:
                     return 'pd' == content
                 if content[-3:] == ' pd' or content[:3] == 'pd ':
                     return True
