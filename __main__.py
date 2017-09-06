@@ -130,7 +130,7 @@ class Bot(commands.Bot):
                 content = message.content.casefold()
                 remove_chars = ['\'', '"', '(', ')', ',', ';', '*', '`', '!', '.']
                 for char in remove_chars:
-                    content = content.strip(char)
+                    content = content.replace(char, '')
                 if len(content) == 2:
                     return 'pd' == content
                 if content[-3:] == ' pd' or content[:3] == 'pd ':
