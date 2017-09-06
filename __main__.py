@@ -125,17 +125,21 @@ class Bot(commands.Bot):
                 return message.content == message2.content
 
             def is_pd(message):
-                if len(message.content) <= 2:
-                    return 'pd' in message.content
+                content = message.content.casefold()
+                if len(content) <= 2:
+                    self.log('message <= 2')
+                    return 'pd' in content
                 else:
-                    if message.content[-2:] == 'pd' or message.content[:2] == 'pd':
+                    if content[-2:] == 'pd' or content[:2] == 'pd':
+                        self.log('pd at first or end')
                         return True
-                    return ' pd ' in message.content
+                    self.log('none of this, testing " pd "')
+                    return ' pd ' in content
 
             if self.config['reactive']:
                 if is_pd(message):
                     try:
-                        yield self.add_reaction(message, 'gay_pride_flag')
+                        yield from self.add_reaction(message, ':pd:354989542580944906')
                     except:
                         pass
 
