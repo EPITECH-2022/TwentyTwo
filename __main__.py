@@ -39,7 +39,7 @@ class Bot(commands.Bot):
             'reactive' : reactive,
 
             'rank_whitelist_file': 'rank_whitelist.txt',
-            'admin_roles_file'   : 'rank_whitelist.txt',
+            'admin_roles_file'   : 'admin_roles.txt',
             'power_admins_file'  : 'power_admins.txt'
         }
         self.rank_whitelist = self.load(self.config['rank_whitelist_file'])
