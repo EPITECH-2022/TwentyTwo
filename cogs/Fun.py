@@ -30,7 +30,7 @@ class Fun:
 
     @commands.command(pass_context=True)
     async def joined(self, context, member: discord.Member = None):
-        ''' Tells the age of a member on this Discord account '''
+        ''' Tells the age of a member on this Discord server '''
         from datetime    import datetime
         if member is None:
             member = context.message.author
