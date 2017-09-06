@@ -127,13 +127,10 @@ class Bot(commands.Bot):
             def is_pd(message):
                 content = message.content.casefold()
                 if len(content) <= 2:
-                    self.log('message <= 2')
                     return 'pd' in content
                 else:
                     if content[-2:] == 'pd' or content[:2] == 'pd':
-                        self.log('pd at first or end')
                         return True
-                    self.log('none of this, testing " pd "')
                     return ' pd ' in content
 
             if self.config['reactive']:
