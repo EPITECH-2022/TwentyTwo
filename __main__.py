@@ -123,6 +123,21 @@ class Bot(commands.Bot):
                     return False
                 # same content = a lag, not same content = not a lag
                 return message.content == message2.content
+
+            def is_pd(message):
+                if len(message) <= 2:
+                    return 'pd' in message
+                else:
+                    if message[-2:] == 'pd' or message[:2] == 'pd':
+                        return True
+                    return ' pd ' in message
+            if self.config['reactive']:
+                if is_pd(message):
+                    try:
+                        await self.add_reaction(message, 'gay_pride_flag')
+                    except:
+                        pass
+
             # call purge check anti_lag on every message
             yield from self.purge_from(message.channel, limit=10, check=anti_lag)
             # process commands
