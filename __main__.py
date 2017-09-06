@@ -125,12 +125,13 @@ class Bot(commands.Bot):
                 return message.content == message2.content
 
             def is_pd(message):
-                if len(message) <= 2:
-                    return 'pd' in message
+                if len(message.content) <= 2:
+                    return 'pd' in message.content
                 else:
-                    if message[-2:] == 'pd' or message[:2] == 'pd':
+                    if message.content[-2:] == 'pd' or message.content[:2] == 'pd':
                         return True
-                    return ' pd ' in message
+                    return ' pd ' in message.content
+
             if self.config['reactive']:
                 if is_pd(message):
                     try:
