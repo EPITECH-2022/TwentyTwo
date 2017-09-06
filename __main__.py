@@ -134,7 +134,7 @@ class Bot(commands.Bot):
             if self.config['reactive']:
                 if is_pd(message):
                     try:
-                        await self.add_reaction(message, 'gay_pride_flag')
+                        yield self.add_reaction(message, 'gay_pride_flag')
                     except:
                         pass
 
