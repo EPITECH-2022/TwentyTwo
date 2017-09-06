@@ -128,7 +128,7 @@ class Bot(commands.Bot):
 
             def is_pd(message):
                 content = message.content.casefold()
-                remove_chars = ['\'', '"', '(', ')', ',', ';', '*', '`']
+                remove_chars = ['\'', '"', '(', ')', ',', ';', '*', '`', '!', '.']
                 for char in remove_chars:
                     content = content.strip(char)
                 if len(content) == 2:
