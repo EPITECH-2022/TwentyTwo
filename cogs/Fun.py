@@ -164,9 +164,10 @@ class Fun:
             await self.bot.say(msg)
     
     @commands.command(pass_context=True)
-    async def toascii(self, context, word : str):
+    async def toascii(self, context)
+        text = self.bot.get_text(context)
         msg = ''
-        for c in word:
+        for c in text:
             msg += str(ord(c)) + ' '
         await self.bot.reply(msg)
         await self.bot.replied(context)
