@@ -176,8 +176,14 @@ class Fun:
     async def fromascii(self, context):
         text = self.bot.get_text(context)
         msg = ''
-        for code in text.split():
-            msg += chr(code)
-        await self.bot.reply(msg)
-        await self.bot.replied(context)
+        try:
+            for code in text.split():
+                code = int(code)
+                msg += chr(code)
+            await self.bot.reply(msg)
+            await self.bot.replied(context)
+        except e:
+            msg = '```\n{}\n```'.format(e)
+            await self.doubt(context)
+            await self.bot.say(msg)
 
