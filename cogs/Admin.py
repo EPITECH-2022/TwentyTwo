@@ -166,7 +166,7 @@ class Admin:
         await self.bot.change_presence(game=game)
         await self.bot.ok(context)
 
-    @commands.command(pass_context=True)
+    @commands.command(pass_context=True, aliases=['fac', 'faction', 'maison'])
     async def rank(self, context, role: str = None, user: discord.Member = None):
         words = self.bot.get_text(context).split()
         # if there is no word in the command text we ignore the command
@@ -188,8 +188,11 @@ class Admin:
         value = words[0].casefold()
         # we build a whitelist based on the sever roles and the bot self whitelist
         server_rank_whitelist = []
+        self_list = self.bot.rank_whitelist
+        if context.invoked_with in ['fac', 'faction']:
+            self_list = ['Alliance', 'Kirin Tor', "Croisade d'Argent", 'Horde', 'Fléau']
         for role in context.message.server.roles:
-            if role.name in self.bot.rank_whitelist:
+            if role.name in self_list:
                 server_rank_whitelist.append(role)
         # to ensure the user has one and only rank we check his ranks
         # if we found out he already has one and the command was not initiated
@@ -208,7 +211,7 @@ class Admin:
                     await self.bot.report(context, e)
         # we search the whitelist for a role which's name = the command option
         i = len(server_rank_whitelist) - 1
-        while i >= 0 and server_rank_whitelist[i].name.casefold() != value:
+        while i >= 0 and server_rank_whitelist[i].name.split[0].casefold() != value:
             i -= 1
         # no matching role found, we tell the user his option is not whitelisted
         if i < 0:
