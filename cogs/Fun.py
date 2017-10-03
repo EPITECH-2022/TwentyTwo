@@ -52,11 +52,11 @@ class Fun:
         if content in [None, '', ' '] or context.invoked_with == 'riz' and not self.bot.is_owner(context.message.author):
             return
         msg = ''
-        if context.invoked_with == 'ri':
+        if context.invoked_with in ['ri', 'bi']:
             msg += '`{}`: '.format(context.message.author)
         for c in content:
             if c.isalpha():
-                b = invoked_with == 'bi' and c in ['b', 'B', 'p', 'P']
+                b = context.invoked_with == 'bi' and c in ['b', 'B', 'p', 'P']
                 if b:
                     msg += ':b:'
                 else:
@@ -65,7 +65,7 @@ class Fun:
                 msg += c
         await self.bot.say(msg)
         await self.bot.replied(context)
-        if context.invoked_with in ['ri', 'riz']:
+        if context.invoked_with in ['ri', 'riz', 'bi']:
             try:
                 await self.bot.delete_message(context.message)
             except discord.errors.Forbidden:
