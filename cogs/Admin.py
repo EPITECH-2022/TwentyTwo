@@ -211,7 +211,7 @@ class Admin:
                     await self.bot.report(context, e)
         # we search the whitelist for a role which's name = the command option
         i = len(server_rank_whitelist) - 1
-        while i >= 0 and server_rank_whitelist[i].name.split[0].casefold() != value:
+        while i >= 0 and server_rank_whitelist[i].name.split()[0].casefold() != value:
             i -= 1
         # no matching role found, we tell the user his option is not whitelisted
         if i < 0:
