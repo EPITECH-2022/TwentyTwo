@@ -44,7 +44,7 @@ class Fun:
         await self.bot.reply('ask `Tina#4153`')
     '''
 
-    @commands.command(pass_context=True, aliases=['ri', 'riz', 'regional_indicator'])
+    @commands.command(pass_context=True, aliases=['ri', 'riz', 'regional_indicator', 'bi'])
     async def emoji(self, context):
         ''' Sends a text and replace letters with regional indicators '''
         from unidecode   import unidecode
@@ -56,7 +56,11 @@ class Fun:
             msg += '`{}`: '.format(context.message.author)
         for c in content:
             if c.isalpha():
-                msg += ':regional_indicator_{}:'.format(unidecode(c.lower()))
+                b = invoked_with == 'bi' and c in ['b', 'B', 'p', 'P']
+                if b:
+                    msg += ':b:'
+                else:
+                    msg += ':regional_indicator_{}:'.format(unidecode(c.lower()))
             else:
                 msg += c
         await self.bot.say(msg)
@@ -162,7 +166,7 @@ class Fun:
             msg = '```\n{}\n```'.format(e)
             await self.bot.doubt(context)
             await self.bot.say(msg)
-    
+
     @commands.command(pass_context=True)
     async def toascii(self, context):
         text = self.bot.get_text(context)
@@ -171,7 +175,7 @@ class Fun:
             msg += str(ord(c)) + ' '
         await self.bot.reply(msg)
         await self.bot.replied(context)
-    
+
     @commands.command(pass_context=True)
     async def fromascii(self, context):
         text = self.bot.get_text(context)
@@ -186,4 +190,3 @@ class Fun:
             msg = '```\n{}\n```'.format(e)
             await self.doubt(context)
             await self.bot.say(msg)
-
