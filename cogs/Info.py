@@ -92,3 +92,8 @@ class Info:
             return
         await self.bot.send_message(context.message.channel, embed=embed)
         await self.bot.replied(context)
+
+    @commands.command(pass_context=True)
+    async def invite(self):
+        await self.bot.reply('https://discord.gg/TVA9Z38')
+        await self.bot.replied(context)
