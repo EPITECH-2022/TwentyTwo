@@ -166,7 +166,7 @@ class Admin:
         await self.bot.change_presence(game=game)
         await self.bot.ok(context)
 
-    @commands.command(pass_context=True, aliases=['fac', 'faction', 'maison'])
+    @commands.command(pass_context=True, aliases=['campus', 'camp', 'fac', 'faction', 'maison'])
     async def rank(self, context, role: str = None, user: discord.Member = None):
         words = self.bot.get_text(context).split()
         # if there is no word in the command text we ignore the command
@@ -189,7 +189,7 @@ class Admin:
         # we build a whitelist based on the sever roles and the bot self whitelist
         server_rank_whitelist = []
         self_list = self.bot.rank_whitelist
-        if context.invoked_with in ['fac', 'faction']:
+        if context.invoked_with in ['fac', 'faction', 'maison']:
             self_list = ['Alliance', 'Kirin Tor', "Croisade d'Argent", 'Horde', 'Fléau']
         for role in context.message.server.roles:
             if role.name in self_list:
