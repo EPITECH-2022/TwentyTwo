@@ -190,7 +190,7 @@ class Admin:
         server_rank_whitelist = []
         self_list = self.bot.rank_whitelist
         if context.invoked_with in ['fac', 'faction', 'maison']:
-            self_list = ['Alliance', 'Kirin Tor', "Croisade d'Argent", 'Horde', 'Fléau']
+            self_list = ['Alliance', 'Kirin Tor', "Croisade d'Argent", 'Horde', 'Fléau', 'PSO']
         for role in context.message.server.roles:
             if role.name in self_list:
                 server_rank_whitelist.append(role)
