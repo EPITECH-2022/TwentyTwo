@@ -189,7 +189,7 @@ class Admin:
         # we build a whitelist based on the sever roles and the bot self whitelist
         server_rank_whitelist = []
         self_list = self.bot.rank_whitelist
-        if context.invoked_with in ['promo', 'promotion' 'graduation']:
+        if context.invoked_with in ['promo', 'promotion', 'graduation']:
             self_list = ['2018', '2019', '2020', '2021', '2022', '2023']
         for role in context.message.server.roles:
             if role.name in self_list:
