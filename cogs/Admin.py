@@ -171,16 +171,26 @@ class Admin:
     @commands.check(is_admin)
     async def pingrole(self, context):
         pinged_user_count = 0
+        ping = False
+        has_graduation_role = False
+        has_city_role = False
         graduation_roles = ["2018", "2019", "2020", "2021", "2022", "2023"]
         special_roles = ["Pedagogy", "Pedagogy Assistant", "Admin", "Administrateur", "Staff"]
         for member in context.message.server.members:
-            flag = 2
+            ping = False
+            has_graduation_role = False
+            has_city_role = False
             for mrole in member.roles:
-                if mrole.name in graduation_roles or mrole.name in self.bot.rank_whitelist:
-                    flag -= 1
                 if mrole.name in special_roles:
-                    flag = 0
-            if flag > 0:
+                    has_graduation_role = True
+                    has_city_role = True
+                    break
+                if mrole.name in graduation_roles:
+                    has_graduation_role = True
+                if mrole.name in self.bot.rank_whitelist:
+                    has_city_role = True
+            ping = True if not has_graduation_role or not has_city_role else False
+            if ping:
                     pinged_user_count += 1
                     await self.bot.send_message(member, "**EPITECH 2022 Server - Announcement**\n\nDon't forget to ask for city and graduation role in EPITECH 2022 Server.\nYou have to ask them before September, 2nd 11:42 PM.\n\n"
                                                + "Please refer to #announcements and #newbies channels for more information on how to do it.")
