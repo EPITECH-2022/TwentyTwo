@@ -166,6 +166,26 @@ class Admin:
         await self.bot.change_presence(game=game)
         await self.bot.ok(context)
 
+    # Temporary command for crisis management
+    @commands.command(pass_context=True, hidden=True)
+    @commands.check(is_admin)
+    async def pingrole(self, context):
+        pinged_user_count = 0
+        graduation_roles = ["2018", "2019", "2020", "2021", "2022", "2023"]
+        special_roles = ["Pedagogy", "Pedagogy Assistant", "Admin", "Administrateur", "Staff"]
+        for member in context.message.server.members:
+            flag = 2
+            for mrole in member.roles:
+                if mrole.name in graduation_roles or mrole.name in self.bot.rank_whitelist:
+                    flag -= 1
+                if mrole.name in special_roles:
+                    flag = 0
+            if flag > 0:
+                    pinged_user_count += 1
+                    await self.bot.send_message(member, "**EPITECH 2022 Server - Announcement**\n\nDon't forget to ask for city and graduation role in EPITECH 2022 Server.\nYou have to ask them before September, 2nd 11:42 PM.\n\n"
+                                               + "Please refer to #announcements and #newbies channels for more information on how to do it.")
+        await self.bot.reply("Ping'ed " + str(pinged_user_count)  +  " member(s).")
+
     @commands.command(pass_context=True, aliases=['campus', 'camp', 'promo', 'promotion', 'graduation'])
     async def rank(self, context, role: str = None, user: discord.Member = None):
         words = self.bot.get_text(context).split()
